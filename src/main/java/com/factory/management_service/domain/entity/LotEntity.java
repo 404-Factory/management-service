@@ -37,7 +37,7 @@ public class LotEntity {
     private String lotGrade;
 
     @Column(precision = 22, scale = 5)
-    private BigDecimal productQty;
+    private Integer productQty;
 
     @Column(length = 50)
     private String productionType;

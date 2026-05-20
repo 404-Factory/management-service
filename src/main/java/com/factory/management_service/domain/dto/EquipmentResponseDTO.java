@@ -15,15 +15,21 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EquipmentResponseDTO {
+
     private Long equipmentId;
     private String equipmentName;
-    private ProcessEntity process;
 
-    public static EquipmentResponseDTO fromEntity(EquipmentEntity entity){
+    private Long processId;
+    private String processName;
+
+    public static EquipmentResponseDTO fromEntity(EquipmentEntity entity) {
         return builder()
-            .equipmentId(entity.getEquipmentId())
-            .equipmentName(entity.getEquipmentName())
-            .process(entity.getProcess())
-            .build();
+                .equipmentId(entity.getEquipmentId())
+                .equipmentName(entity.getEquipmentName())
+
+                .processId(entity.getProcess().getProcessId())
+                .processName(entity.getProcess().getProcessName())
+
+                .build();
     }
 }

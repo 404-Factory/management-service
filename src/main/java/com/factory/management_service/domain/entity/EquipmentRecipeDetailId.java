@@ -12,7 +12,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class EquipmentRecipeDetailId implements Serializable {
 
-    private String equipmentRecId;
+    private Long equipmentRecId;
 
     private String param;
 }

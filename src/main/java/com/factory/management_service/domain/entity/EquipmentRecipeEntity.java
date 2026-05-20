@@ -14,8 +14,9 @@ import lombok.*;
 public class EquipmentRecipeEntity {
 
     @Id
-    @Column(name = "equipment_rec_id", length = 50)
-    private String equipmentRecId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "equipment_rec_id")
+    private Long equipmentRecId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipment_id")

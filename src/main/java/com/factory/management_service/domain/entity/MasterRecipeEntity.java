@@ -12,8 +12,9 @@ import lombok.*;
 public class MasterRecipeEntity {
 
     @Id
-    @Column(name = "master_recipe_id", length = 50)
-    private String masterRecipeId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "master_recipe_id")
+    private Long masterRecipeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")

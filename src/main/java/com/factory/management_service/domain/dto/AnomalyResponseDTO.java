@@ -19,23 +19,32 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AnomalyResponseDTO {
+
     private Long logId;
-    private EquipmentEntity equipment;
-    private EquipmentRecipeEntity equipmentRecipe;
+
+    private Long equipmentId;
+    private String equipmentName;
+
+    private Long equipmentRecipeId;
+
     private String recipeParameter;
     private Severity severity;
     private LocalDateTime occurredTime;
     private Integer causeRule;
 
-    public static AnomalyResponseDTO fromEntity(AnomalyEntity entity){
+    public static AnomalyResponseDTO fromEntity(AnomalyEntity entity) {
         return builder()
-            .logId(entity.getLogId())
-            .equipment(entity.getEquipment())
-            .equipmentRecipe(entity.getEquipmentRecipe())
-            .recipeParameter(entity.getRecipeParameter())
-            .severity(entity.getSeverity())
-            .occurredTime(entity.getOccurredTime())
-            .causeRule(entity.getCauseRule())
-            .build();
+                .logId(entity.getLogId())
+
+                .equipmentId(entity.getEquipment().getEquipmentId())
+                .equipmentName(entity.getEquipment().getEquipmentName())
+
+                .equipmentRecipeId(entity.getEquipmentRecipe().getEquipmentRecId())
+
+                .recipeParameter(entity.getRecipeParameter())
+                .severity(entity.getSeverity())
+                .occurredTime(entity.getOccurredTime())
+                .causeRule(entity.getCauseRule())
+                .build();
     }
 }

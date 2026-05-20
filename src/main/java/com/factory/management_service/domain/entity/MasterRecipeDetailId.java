@@ -12,7 +12,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class MasterRecipeDetailId implements Serializable {
 
-    private String masterRecipeId;
+    private Long masterRecipeId;
 
     private String param;
 }

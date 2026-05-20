@@ -2,9 +2,7 @@ package com.factory.management_service.domain.dto;
 
 import java.util.List;
 
-import com.factory.management_service.domain.entity.EquipmentEntity;
 import com.factory.management_service.domain.entity.EquipmentRecipeEntity;
-import com.factory.management_service.domain.entity.MasterRecipeEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,23 +16,36 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EquipmentRecipeResponseDTO {
-    private String equipmentRecId;
-    private EquipmentEntity equipment;
-    private MasterRecipeEntity masterRecipe;
+
+    private Long equipmentRecId;
+
+    private Long equipmentId;
+    private String equipmentName;
+
+    private Long masterRecipeId;
+
     private Double version;
 
     private List<EquipmentRecipeDetailResponseDTO> details;
 
     public static EquipmentRecipeResponseDTO fromEntity(EquipmentRecipeEntity entity) {
+
         return builder()
                 .equipmentRecId(entity.getEquipmentRecId())
-                .equipment(entity.getEquipment())
-                .masterRecipe(entity.getMasterRecipe())
+
+                .equipmentId(entity.getEquipment().getEquipmentId())
+                .equipmentName(entity.getEquipment().getEquipmentName())
+
+                .masterRecipeId(entity.getMasterRecipe().getMasterRecipeId())
+
                 .version(entity.getVersion())
-                .details(entity.getDetails()
-                        .stream()
-                        .map(EquipmentRecipeDetailResponseDTO::fromEntity)
-                        .toList())
+
+                .details(
+                        entity.getDetails()
+                                .stream()
+                                .map(EquipmentRecipeDetailResponseDTO::fromEntity)
+                                .toList())
+
                 .build();
     }
 }
