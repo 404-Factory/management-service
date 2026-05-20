@@ -17,6 +17,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/equipments")
@@ -24,26 +25,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ManagementController {
     private final ManagementService managementService;
 
-    @GetMapping("/{processId}/list")
-    public ResponseEntity<List<EquipmentResponseDTO>> getEquipmentList(@RequestParam Long processId) {
+    @GetMapping("/list/{processId}")
+    public ResponseEntity<List<EquipmentResponseDTO>> getEquipmentList(@PathVariable Long processId) {
         List<EquipmentResponseDTO> response = managementService.getEquipmentList(processId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-    
+
     @GetMapping("/{equipmentId}")
-    public ResponseEntity<EquipmentResponseDTO> getEquipmentDetail(@RequestParam Long equipmentId) {
+    public ResponseEntity<EquipmentResponseDTO> getEquipmentDetail(@PathVariable Long equipmentId) {
         EquipmentResponseDTO response = managementService.getEquipmentDetail(equipmentId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/{equipmentId}/anomaly")
-    public ResponseEntity<List<AnomalyResponseDTO>> getRecentAnomaly(@RequestParam Long equipmentId) {
+    public ResponseEntity<List<AnomalyResponseDTO>> getRecentAnomaly(@PathVariable Long equipmentId) {
         List<AnomalyResponseDTO> response = managementService.getRecentAnomaly(equipmentId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/{equipmentId}/recipe")
-    public ResponseEntity<EquipmentRecipeResponseDTO> getCurrentRecipe(@RequestParam Long equipmentId) {
+    public ResponseEntity<EquipmentRecipeResponseDTO> getCurrentRecipe(@PathVariable Long equipmentId) {
         EquipmentRecipeResponseDTO response = managementService.getCurrentRecipe(equipmentId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

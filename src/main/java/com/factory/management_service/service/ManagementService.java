@@ -26,7 +26,8 @@ public class ManagementService {
 
     @Transactional(readOnly = true)
     public List<EquipmentResponseDTO> getEquipmentList(Long processId) {
-        return equipmentRepository.findAll()
+        return equipmentRepository.findByProcess_ProcessId(processId)
+                .orElseThrow(() -> new RuntimeException("설비 목록을 찾을 수 없습니다."))
                 .stream()
                 .map(EquipmentResponseDTO::fromEntity)
                 .collect(Collectors.toList());
