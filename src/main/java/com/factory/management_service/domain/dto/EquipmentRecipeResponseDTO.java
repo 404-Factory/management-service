@@ -1,5 +1,6 @@
 package com.factory.management_service.domain.dto;
 
+import java.util.List;
 
 import com.factory.management_service.domain.entity.EquipmentEntity;
 import com.factory.management_service.domain.entity.EquipmentRecipeEntity;
@@ -22,12 +23,18 @@ public class EquipmentRecipeResponseDTO {
     private MasterRecipeEntity masterRecipe;
     private Double version;
 
-    public static EquipmentRecipeResponseDTO fromEntity(EquipmentRecipeEntity entity){
+    private List<EquipmentRecipeDetailResponseDTO> details;
+
+    public static EquipmentRecipeResponseDTO fromEntity(EquipmentRecipeEntity entity) {
         return builder()
-            .equipmentRecId(entity.getEquipmentRecId())
-            .equipment(entity.getEquipment())
-            .masterRecipe(entity.getMasterRecipe())
-            .version(entity.getVersion())
-            .build();
+                .equipmentRecId(entity.getEquipmentRecId())
+                .equipment(entity.getEquipment())
+                .masterRecipe(entity.getMasterRecipe())
+                .version(entity.getVersion())
+                .details(entity.getDetails()
+                        .stream()
+                        .map(EquipmentRecipeDetailResponseDTO::fromEntity)
+                        .toList())
+                .build();
     }
 }

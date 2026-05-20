@@ -1,5 +1,7 @@
 package com.factory.management_service.domain.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,4 +27,7 @@ public class EquipmentRecipeEntity {
 
     @Column(name = "version")
     private Double version;
+
+    @OneToMany(mappedBy = "equipmentRecipe", fetch = FetchType.LAZY)
+    private List<EquipmentRecipeDetail> details;
 }
