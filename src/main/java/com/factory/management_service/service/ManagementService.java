@@ -25,7 +25,7 @@ public class ManagementService {
     private final EquipmentRecipeRepository equipmentRecipeRepository;
 
     @Transactional(readOnly = true)
-    public List<EquipmentResponseDTO> getEquipmentList(Long processId){
+    public List<EquipmentResponseDTO> getEquipmentList(Long processId) {
         return equipmentRepository.findAll()
                 .stream()
                 .map(EquipmentResponseDTO::fromEntity)
@@ -33,15 +33,15 @@ public class ManagementService {
     }
 
     @Transactional(readOnly = true)
-    public EquipmentResponseDTO getEquipmentDetail(Long equipmentId){
-        EquipmentEntity response =  equipmentRepository.findById(equipmentId)
+    public EquipmentResponseDTO getEquipmentDetail(Long equipmentId) {
+        EquipmentEntity response = equipmentRepository.findById(equipmentId)
                 .orElseThrow(() -> new RuntimeException("설비를 찾을 수 없습니다."));
         new EquipmentResponseDTO();
         return EquipmentResponseDTO.fromEntity(response);
     }
 
     @Transactional(readOnly = true)
-    public List<AnomalyResponseDTO> getRecentAnomaly(Long equipmentId){
+    public List<AnomalyResponseDTO> getRecentAnomaly(Long equipmentId) {
         return anomalyRepository.findAll()
                 .stream()
                 .map(AnomalyResponseDTO::fromEntity)
@@ -49,8 +49,8 @@ public class ManagementService {
     }
 
     @Transactional(readOnly = true)
-    public EquipmentRecipeResponseDTO getCurrentRecipe(Long equipmentId){
-        EquipmentRecipeEntity response = equipmentRecipeRepository.findByEquipment(equipmentId)
+    public EquipmentRecipeResponseDTO getCurrentRecipe(Long equipmentId) {
+        EquipmentRecipeEntity response = equipmentRecipeRepository.findByEquipment_EquipmentId(equipmentId)
                 .orElseThrow(() -> new RuntimeException("레시피를 찾을 수 없습니다."));
         new EquipmentRecipeResponseDTO();
         return EquipmentRecipeResponseDTO.fromEntity(response);

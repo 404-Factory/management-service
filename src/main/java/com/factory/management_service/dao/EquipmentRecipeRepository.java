@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.factory.management_service.domain.entity.EquipmentRecipeEntity;
 
 public interface EquipmentRecipeRepository extends JpaRepository<EquipmentRecipeEntity, String> {
-    Optional<EquipmentRecipeEntity> findByEquipment(Long equipmentId);
+    Optional<EquipmentRecipeEntity> findByEquipment_EquipmentId(Long equipmentId);
 }
