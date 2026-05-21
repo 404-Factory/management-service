@@ -6,4 +6,4 @@ spring:
     name: management-service
 
   profiles:
-    active: local
+    active: dev

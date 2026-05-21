@@ -2,13 +2,13 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://RDS_HOST:3306/factory-db
+    url: jdbc:mariadb://RDS_HOST:3306/factory_db?sslMode=trust
     username: root
     password: 12345678
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
     show-sql: true
 
