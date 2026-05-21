@@ -1,7 +1,6 @@
 package com.factory.management_service.domain.dto;
 
 import com.factory.management_service.domain.entity.EquipmentEntity;
-import com.factory.management_service.domain.entity.ProcessEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
