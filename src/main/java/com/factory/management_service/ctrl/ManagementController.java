@@ -1,5 +1,7 @@
 package com.factory.management_service.ctrl;
 
+import com.factory.common.core.dto.ApiResponse;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import com.factory.management_service.domain.dto.AnomalyResponseDTO;
@@ -13,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -22,29 +22,38 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/equipments")
 @RequiredArgsConstructor
 public class ManagementController {
+
     private final ManagementService managementService;
 
     @GetMapping("/list/{processId}")
-    public ResponseEntity<List<EquipmentResponseDTO>> getEquipmentList(@PathVariable Long processId) {
+    public ApiResponse<List<EquipmentResponseDTO>> getEquipmentList(
+            @PathVariable Long processId) {
         List<EquipmentResponseDTO> response = managementService.getEquipmentList(processId);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        return ApiResponse.ofSuccess(response);
     }
 
     @GetMapping("/{equipmentId}")
-    public ResponseEntity<EquipmentResponseDTO> getEquipmentDetail(@PathVariable Long equipmentId) {
+    public ApiResponse<EquipmentResponseDTO> getEquipmentDetail(
+            @PathVariable Long equipmentId) {
         EquipmentResponseDTO response = managementService.getEquipmentDetail(equipmentId);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        return ApiResponse.ofSuccess(response);
     }
 
     @GetMapping("/{equipmentId}/anomaly")
-    public ResponseEntity<List<AnomalyResponseDTO>> getRecentAnomaly(@PathVariable Long equipmentId) {
+    public ApiResponse<List<AnomalyResponseDTO>> getRecentAnomaly(
+            @PathVariable Long equipmentId) {
         List<AnomalyResponseDTO> response = managementService.getRecentAnomaly(equipmentId);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        return ApiResponse.ofSuccess(response);
     }
 
     @GetMapping("/{equipmentId}/recipe")
-    public ResponseEntity<EquipmentRecipeResponseDTO> getCurrentRecipe(@PathVariable Long equipmentId) {
+    public ApiResponse<EquipmentRecipeResponseDTO> getCurrentRecipe(
+            @PathVariable Long equipmentId) {
         EquipmentRecipeResponseDTO response = managementService.getCurrentRecipe(equipmentId);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        return ApiResponse.ofSuccess(response);
     }
 }
