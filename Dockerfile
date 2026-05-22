@@ -1,3 +1,8 @@
+# docker build -t management-service:latest .
+# docker run -d --name management-service -p 8086:8080 management-service:latest
+
+# docker run -d -p 3000:3000 --name=grafana   -e "GF_SECURITY_ALLOW_EMBEDDING=true"   -e "GF_AUTH_ANONYMOUS_ENABLED=true"   -e "GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer"   grafana/grafana
+
 # docker build --build-arg JAR_FILE=path/myapp.jar if you need to specify the path
 
 FROM eclipse-temurin:17-jdk-alpine as builder
