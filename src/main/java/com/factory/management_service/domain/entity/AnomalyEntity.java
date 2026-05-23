@@ -36,6 +36,15 @@ public class AnomalyEntity {
     @Column(name = "occurred_time")
     private LocalDateTime occurredTime;
 
-    @Column(name = "cause_rule")
-    private Integer causeRule;
+    @Column(name = "rule_name", length = 50)
+    private String causeRule;
+
+    @Column(name = "anomaly_type", length = 50)
+    private String anomalyType;
+
+    @Column(name = "window_start_time")
+    private LocalDateTime windowStartTime;
+
+    @Column(name = "sample_count")
+    private Integer sampleCount;
 }

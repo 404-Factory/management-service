@@ -51,22 +51,22 @@ public class DataSeeder implements CommandLineRunner {
 
                 ProcessEntity coat = processRepository.save(
                                 ProcessEntity.builder()
-                                                .processName("도포")
+                                                .processName("DEPOSITION")
                                                 .build());
 
                 ProcessEntity photo = processRepository.save(
                                 ProcessEntity.builder()
-                                                .processName("포토")
+                                                .processName("PHOTO")
                                                 .build());
 
                 ProcessEntity etch = processRepository.save(
                                 ProcessEntity.builder()
-                                                .processName("식각")
+                                                .processName("ETCH")
                                                 .build());
 
                 ProcessEntity clear = processRepository.save(
                                 ProcessEntity.builder()
-                                                .processName("클리어")
+                                                .processName("CLEANING")
                                                 .build());
 
                 // =====================================================
@@ -123,13 +123,13 @@ public class DataSeeder implements CommandLineRunner {
 
                 EquipmentEntity cleaner1 = equipmentRepository.save(
                                 EquipmentEntity.builder()
-                                                .equipmentName("EQP-CLEAN-001")
+                                                .equipmentName("EQP-CLEANING-001")
                                                 .process(clear)
                                                 .build());
 
                 EquipmentEntity cleaner2 = equipmentRepository.save(
                                 EquipmentEntity.builder()
-                                                .equipmentName("EQP-CLEAN-002")
+                                                .equipmentName("EQP-CLEANING-002")
                                                 .process(clear)
                                                 .build());
 

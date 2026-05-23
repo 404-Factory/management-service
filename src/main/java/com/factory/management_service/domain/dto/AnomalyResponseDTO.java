@@ -30,7 +30,7 @@ public class AnomalyResponseDTO {
     private String recipeParameter;
     private Severity severity;
     private LocalDateTime occurredTime;
-    private Integer causeRule;
+    private String causeRule;
 
     public static AnomalyResponseDTO fromEntity(AnomalyEntity entity) {
         return builder()
