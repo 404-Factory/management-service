@@ -22,4 +22,15 @@ public interface AnomalyRepository extends JpaRepository<AnomalyEntity, Long> {
             """)
     List<AnomalyEntity> findRecentAnomalies(
             @Param("from") LocalDateTime from);
+
+    @Query("""
+                SELECT a
+                FROM AnomalyEntity a
+                join fetch a.equipment e
+                WHERE a.occurredTime >= :from
+                AND e.equipmentId = :equipmentId
+                ORDER BY a.occurredTime DESC
+            """)
+    List<AnomalyEntity> findRecentAnomaliesByEquipmentId(
+            @Param("from") LocalDateTime from, @Param("equipmentId") Long equipmentId);
 }
