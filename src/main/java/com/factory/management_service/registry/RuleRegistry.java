@@ -72,7 +72,7 @@ public class RuleRegistry {
                 // =================================================
 
                 rules.put(
-                                new RuleKey("Soft Bake Temp", "Nelson Rule 1"),
+                                new RuleKey("Soft Bake Temperature", "Nelson Rule 1"),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -81,7 +81,7 @@ public class RuleRegistry {
                                                                 100)));
 
                 rules.put(
-                                new RuleKey("Soft Bake Temp", "Nelson Rule 2"),
+                                new RuleKey("Soft Bake Temperature", "Nelson Rule 2"),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -90,7 +90,7 @@ public class RuleRegistry {
                                                                 100)));
 
                 rules.put(
-                                new RuleKey("Soft Bake Temp", "Nelson Rule 3"),
+                                new RuleKey("Soft Bake Temperature", "Nelson Rule 3"),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -101,6 +101,41 @@ public class RuleRegistry {
                                                                 "PINHOLE",
                                                                 "PINHOLE_FAIL",
                                                                 30)));
+
+                // =================================================
+                // 포토 - PEB
+                // =================================================
+
+                rules.put(
+                                new RuleKey("PEB", "Nelson Rule 1"),
+
+                                List.of(
+                                                new DefectCandidate(
+                                                                "CD",
+                                                                "CD_FAIL",
+                                                                100)));
+
+                rules.put(
+                                new RuleKey("PEB", "Nelson Rule 2"),
+
+                                List.of(
+                                                new DefectCandidate(
+                                                                "CD",
+                                                                "CD_FAIL",
+                                                                70),
+                                                new DefectCandidate(
+                                                                "PATTERN",
+                                                                "PATTERN_OPEN",
+                                                                30)));
+
+                rules.put(
+                                new RuleKey("PEB", "Nelson Rule 3"),
+
+                                List.of(
+                                                new DefectCandidate(
+                                                                "CD",
+                                                                "CD_FAIL",
+                                                                100)));
 
                 // =================================================
                 // 포토 - Exposure Dose
@@ -144,6 +179,145 @@ public class RuleRegistry {
                                                                 "PATTERN",
                                                                 "BRIDGE",
                                                                 20)));
+                // =================================================
+                // 식각 - Chamber Pressure
+                // =================================================
+
+                rules.put(
+                                new RuleKey("Chamber Pressure", "Nelson Rule 1"),
+
+                                List.of(
+                                                new DefectCandidate(
+                                                                "ETCH_PROFILE",
+                                                                "ETCH_PROFILE_DEFECT",
+                                                                100)));
+
+                rules.put(
+                                new RuleKey("Chamber Pressure", "Nelson Rule 2"),
+
+                                List.of(
+                                                new DefectCandidate(
+                                                                "ETCH_PROFILE",
+                                                                "ETCH_PROFILE_DEFECT",
+                                                                100)));
+
+                rules.put(
+                                new RuleKey("Chamber Pressure", "Nelson Rule 3"),
+
+                                List.of(
+                                                new DefectCandidate(
+                                                                "ETCH_PROFILE",
+                                                                "ETCH_PROFILE_DEFECT",
+                                                                100)));
+                // =================================================
+                // 식각 - Chuck Temperature
+                // =================================================
+
+                rules.put(
+                                new RuleKey("Chuck Temperature", "Nelson Rule 1"),
+
+                                List.of(
+                                                new DefectCandidate(
+                                                                "THICKNESS",
+                                                                "THICKNESS_NON_UNIFORM",
+                                                                100)));
+
+                rules.put(
+                                new RuleKey("Chuck Temperature", "Nelson Rule 2"),
+
+                                List.of(
+                                                new DefectCandidate(
+                                                                "THICKNESS",
+                                                                "THICKNESS_NON_UNIFORM",
+                                                                100)));
+
+                rules.put(
+                                new RuleKey("Chuck Temperature", "Nelson Rule 3"),
+
+                                List.of(
+                                                new DefectCandidate(
+                                                                "THICKNESS",
+                                                                "THICKNESS_NON_UNIFORM",
+                                                                100)));
+
+                // =================================================
+                // 클리어 - Chemical Temperature
+                // =================================================
+
+                rules.put(
+                                new RuleKey("Chemical Temperature", "Nelson Rule 1"),
+
+                                List.of(
+                                                new DefectCandidate(
+                                                                "RESIDUE",
+                                                                "RESIDUE",
+                                                                100)));
+
+                rules.put(
+                                new RuleKey("Chemical Temperature", "Nelson Rule 2"),
+
+                                List.of(
+                                                new DefectCandidate(
+                                                                "RESIDUE",
+                                                                "RESIDUE",
+                                                                60),
+                                                new DefectCandidate(
+                                                                "FILM_DAMAGE",
+                                                                "BOTTOM_LAYER_DAMAGE",
+                                                                40)));
+
+                rules.put(
+                                new RuleKey("Chemical Temperature", "Nelson Rule 3"),
+
+                                List.of(
+                                                new DefectCandidate(
+                                                                "RESIDUE",
+                                                                "RESIDUE",
+                                                                100)));
+
+                // =================================================
+                // 클리어 - Chemical Concentration
+                // =================================================
+
+                rules.put(
+                                new RuleKey("Chemical Concentration", "Nelson Rule 1"),
+
+                                List.of(
+                                                new DefectCandidate(
+                                                                "RESIDUE",
+                                                                "RESIDUE",
+                                                                50),
+                                                new DefectCandidate(
+                                                                "FILM_DAMAGE",
+                                                                "BOTTOM_LAYER_DAMAGE",
+                                                                50)));
+
+                rules.put(
+                                new RuleKey("Chemical Concentration", "Nelson Rule 2"),
+
+                                List.of(
+                                                new DefectCandidate(
+                                                                "RESIDUE",
+                                                                "RESIDUE",
+                                                                40),
+                                                new DefectCandidate(
+                                                                "FILM_DAMAGE",
+                                                                "BOTTOM_LAYER_DAMAGE",
+                                                                60)));
+
+                rules.put(
+                                new RuleKey("Chemical Concentration", "Nelson Rule 3"),
+
+                                List.of(
+                                                new DefectCandidate(
+                                                                "RESIDUE",
+                                                                "RESIDUE",
+                                                                20),
+                                                new DefectCandidate(
+                                                                "FILM_DAMAGE",
+                                                                "BOTTOM_LAYER_DAMAGE",
+                                                                80)));
+
         }
 
         public List<DefectCandidate> getCandidates(
