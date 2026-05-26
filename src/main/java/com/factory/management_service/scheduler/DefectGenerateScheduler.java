@@ -36,7 +36,7 @@ public class DefectGenerateScheduler {
     @Scheduled(fixedDelay = 60000)
     public void generate() {
 
-        LocalDateTime from = LocalDateTime.now().minusHours(24);
+        LocalDateTime from = LocalDateTime.now().minusMinutes(1);
 
         List<AnomalyEntity> anomalyLogs = anomalyRepository
                 .findRecentAnomalies(from);
