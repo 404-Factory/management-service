@@ -129,19 +129,19 @@ public class DefectGeneratorService {
         return switch (parameter) {
 
             case "Spin Speed",
-                    "Soft Bake Temp" ->
+                    "Soft Bake Temperature" ->
                 "DEPOSITION";
 
             case "Exposure Dose",
-                    "PEB Temp" ->
+                    "PEB" ->
                 "PHOTO";
 
             case "Chamber Pressure",
-                    "Chuck Temp" ->
+                    "Chuck Temperature" ->
                 "ETCH";
 
-            case "Chemical Temp",
-                    "Chemical 농도" ->
+            case "Chemical Temperature",
+                    "Chemical Concentration" ->
                 "CLEANING";
 
             default -> "UNKNOWN";
@@ -159,19 +159,19 @@ public class DefectGeneratorService {
         return switch (parameter) {
 
             case "Spin Speed",
-                    "Soft Bake Temp" ->
+                    "Soft Bake Temperature" ->
                 1L;
 
             case "Exposure Dose",
-                    "PEB Temp" ->
+                    "PEB" ->
                 2L;
 
             case "Chamber Pressure",
-                    "Chuck Temp" ->
+                    "Chuck Temperature" ->
                 3L;
 
-            case "Chemical Temp",
-                    "Chemical 농도" ->
+            case "Chemical Temperature",
+                    "Chemical Concentration" ->
                 4L;
 
             default -> 0L;

@@ -33,7 +33,7 @@ public class DefectGenerateScheduler {
      * 1분마다 최근 anomaly 조회 후
      * synthetic defect 생성
      */
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 60000)
     public void generate() {
 
         LocalDateTime from = LocalDateTime.now().minusHours(24);
