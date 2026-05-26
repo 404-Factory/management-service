@@ -37,22 +37,6 @@ public class ManagementService {
         }
 
         @Transactional(readOnly = true)
-        public List<AlertEquipmentResponseDTO> getAlertEquipmentList() {
-
-                return alertRepository.findUnreadAlertsWithEquipment()
-                                .stream()
-                                .map(alert -> AlertEquipmentResponseDTO.builder()
-                                                .alertId(alert.getAlertId())
-                                                .equipmentId(
-                                                                alert.getAnomalyLog()
-                                                                                .getEquipment()
-                                                                                .getEquipmentId())
-                                                .severity(alert.getSeverity().name())
-                                                .build())
-                                .toList();
-        }
-
-        @Transactional(readOnly = true)
         public List<EquipmentResponseDTO> getEquipmentList(Long processId) {
                 return equipmentRepository.findByProcess_ProcessId(processId)
                                 .orElseThrow(() -> new RuntimeException("설비 목록을 찾을 수 없습니다."))

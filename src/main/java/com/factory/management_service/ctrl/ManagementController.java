@@ -18,7 +18,6 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/equipments")
@@ -62,12 +61,6 @@ public class ManagementController {
     @GetMapping("/dashboard")
     public ApiResponse<List<EquipmentResponseDTO>> getDashboardList() {
         List<EquipmentResponseDTO> response = managementService.getDashboardList();
-        return ApiResponse.ofSuccess(response);
-    }
-
-    @GetMapping("/severity")
-    public ApiResponse<List<AlertEquipmentResponseDTO>> getAlertEquipmentList() {
-        List<AlertEquipmentResponseDTO> response = managementService.getAlertEquipmentList();
         return ApiResponse.ofSuccess(response);
     }
 
