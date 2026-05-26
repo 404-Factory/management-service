@@ -1,5 +1,6 @@
 package com.factory.management_service.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,65 +23,67 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ManagementService {
-    private final EquipmentRepository equipmentRepository;
-    private final AnomalyRepository anomalyRepository;
-    private final EquipmentRecipeRepository equipmentRecipeRepository;
-    private final AlertRepository alertRepository;
+        private final EquipmentRepository equipmentRepository;
+        private final AnomalyRepository anomalyRepository;
+        private final EquipmentRecipeRepository equipmentRecipeRepository;
+        private final AlertRepository alertRepository;
 
-    @Transactional(readOnly = true)
-    public List<EquipmentResponseDTO> getDashboardList() {
-        return equipmentRepository.findAll()
-                .stream()
-                .map(EquipmentResponseDTO::fromEntity)
-                .collect(Collectors.toList());
-    }
+        @Transactional(readOnly = true)
+        public List<EquipmentResponseDTO> getDashboardList() {
+                return equipmentRepository.findAll()
+                                .stream()
+                                .map(EquipmentResponseDTO::fromEntity)
+                                .collect(Collectors.toList());
+        }
 
-    @Transactional(readOnly = true)
-    public List<AlertEquipmentResponseDTO> getAlertEquipmentList() {
+        @Transactional(readOnly = true)
+        public List<AlertEquipmentResponseDTO> getAlertEquipmentList() {
 
-        return alertRepository.findUnreadAlertsWithEquipment()
-                .stream()
-                .map(alert -> AlertEquipmentResponseDTO.builder()
-                        .alertId(alert.getAlertId())
-                        .equipmentId(
-                                alert.getAnomalyLog()
-                                        .getEquipment()
-                                        .getEquipmentId())
-                        .severity(alert.getSeverity().name())
-                        .build())
-                .toList();
-    }
+                return alertRepository.findUnreadAlertsWithEquipment()
+                                .stream()
+                                .map(alert -> AlertEquipmentResponseDTO.builder()
+                                                .alertId(alert.getAlertId())
+                                                .equipmentId(
+                                                                alert.getAnomalyLog()
+                                                                                .getEquipment()
+                                                                                .getEquipmentId())
+                                                .severity(alert.getSeverity().name())
+                                                .build())
+                                .toList();
+        }
 
-    @Transactional(readOnly = true)
-    public List<EquipmentResponseDTO> getEquipmentList(Long processId) {
-        return equipmentRepository.findByProcess_ProcessId(processId)
-                .orElseThrow(() -> new RuntimeException("설비 목록을 찾을 수 없습니다."))
-                .stream()
-                .map(EquipmentResponseDTO::fromEntity)
-                .collect(Collectors.toList());
-    }
+        @Transactional(readOnly = true)
+        public List<EquipmentResponseDTO> getEquipmentList(Long processId) {
+                return equipmentRepository.findByProcess_ProcessId(processId)
+                                .orElseThrow(() -> new RuntimeException("설비 목록을 찾을 수 없습니다."))
+                                .stream()
+                                .map(EquipmentResponseDTO::fromEntity)
+                                .collect(Collectors.toList());
+        }
 
-    @Transactional(readOnly = true)
-    public EquipmentResponseDTO getEquipmentDetail(Long equipmentId) {
-        EquipmentEntity response = equipmentRepository.findById(equipmentId)
-                .orElseThrow(() -> new RuntimeException("설비를 찾을 수 없습니다."));
-        new EquipmentResponseDTO();
-        return EquipmentResponseDTO.fromEntity(response);
-    }
+        @Transactional(readOnly = true)
+        public EquipmentResponseDTO getEquipmentDetail(Long equipmentId) {
+                EquipmentEntity response = equipmentRepository.findById(equipmentId)
+                                .orElseThrow(() -> new RuntimeException("설비를 찾을 수 없습니다."));
+                new EquipmentResponseDTO();
+                return EquipmentResponseDTO.fromEntity(response);
+        }
 
-    @Transactional(readOnly = true)
-    public List<AnomalyResponseDTO> getRecentAnomaly(Long equipmentId) {
-        return anomalyRepository.findAll()
-                .stream()
-                .map(AnomalyResponseDTO::fromEntity)
-                .collect(Collectors.toList());
-    }
+        @Transactional(readOnly = true)
+        public List<AnomalyResponseDTO> getRecentAnomaly(Long equipmentId) {
+                LocalDateTime from = LocalDateTime.now().minusDays(7);
+                return anomalyRepository.findRecentAnomaliesByEquipmentId(from, equipmentId)
+                                .stream()
+                                .map(AnomalyResponseDTO::fromEntity)
+                                .collect(Collectors.toList());
+        }
 
-    @Transactional(readOnly = true)
-    public EquipmentRecipeResponseDTO getCurrentRecipe(Long equipmentId) {
-        EquipmentRecipeEntity response = equipmentRecipeRepository.findTopByEquipment_EquipmentIdOrderByVersionDesc(equipmentId)
-                .orElseThrow(() -> new RuntimeException("레시피를 찾을 수 없습니다."));
-        new EquipmentRecipeResponseDTO();
-        return EquipmentRecipeResponseDTO.fromEntity(response);
-    }
+        @Transactional(readOnly = true)
+        public EquipmentRecipeResponseDTO getCurrentRecipe(Long equipmentId) {
+                EquipmentRecipeEntity response = equipmentRecipeRepository
+                                .findTopByEquipment_EquipmentIdOrderByVersionDesc(equipmentId)
+                                .orElseThrow(() -> new RuntimeException("레시피를 찾을 수 없습니다."));
+                new EquipmentRecipeResponseDTO();
+                return EquipmentRecipeResponseDTO.fromEntity(response);
+        }
 }
