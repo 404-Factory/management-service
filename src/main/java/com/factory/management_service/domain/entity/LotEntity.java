@@ -3,8 +3,6 @@ package com.factory.management_service.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
-
 @Entity
 @Table(name = "LOT_INFO")
 @Getter
