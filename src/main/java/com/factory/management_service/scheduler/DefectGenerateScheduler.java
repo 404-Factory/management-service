@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.factory.management_service.dao.AnomalyRepository;
 import com.factory.management_service.domain.entity.AnomalyEntity;
+import com.factory.management_service.domain.entity.DefectEntity;
 import com.factory.management_service.service.DefectCreateService;
 import com.factory.management_service.service.DefectGeneratorService;
 import com.factory.management_service.service.DefectProbabilityService;
@@ -32,10 +33,10 @@ public class DefectGenerateScheduler {
      * 1분마다 최근 anomaly 조회 후
      * synthetic defect 생성
      */
-    @Scheduled(fixedDelay = 60000)
+    @Scheduled(fixedDelay = 5000)
     public void generate() {
 
-        LocalDateTime from = LocalDateTime.now().minusMinutes(1);
+        LocalDateTime from = LocalDateTime.now().minusHours(24);
 
         List<AnomalyEntity> anomalyLogs = anomalyRepository
                 .findRecentAnomalies(from);
