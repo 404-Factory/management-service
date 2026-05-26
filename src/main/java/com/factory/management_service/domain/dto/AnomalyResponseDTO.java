@@ -3,8 +3,6 @@ package com.factory.management_service.domain.dto;
 import java.time.LocalDateTime;
 
 import com.factory.management_service.domain.entity.AnomalyEntity;
-import com.factory.management_service.domain.entity.EquipmentEntity;
-import com.factory.management_service.domain.entity.EquipmentRecipeEntity;
 import com.factory.management_service.domain.entity.Severity;
 
 import lombok.AllArgsConstructor;
