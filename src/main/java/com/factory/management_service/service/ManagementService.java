@@ -78,7 +78,7 @@ public class ManagementService {
 
     @Transactional(readOnly = true)
     public EquipmentRecipeResponseDTO getCurrentRecipe(Long equipmentId) {
-        EquipmentRecipeEntity response = equipmentRecipeRepository.findByEquipment_EquipmentId(equipmentId)
+        EquipmentRecipeEntity response = equipmentRecipeRepository.findTopByEquipment_EquipmentIdOrderByVersionDesc(equipmentId)
                 .orElseThrow(() -> new RuntimeException("레시피를 찾을 수 없습니다."));
         new EquipmentRecipeResponseDTO();
         return EquipmentRecipeResponseDTO.fromEntity(response);
