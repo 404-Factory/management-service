@@ -4,6 +4,7 @@ import com.factory.common.core.dto.ApiResponse;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.factory.management_service.domain.dto.AlertEquipmentResponseDTO;
 import com.factory.management_service.domain.dto.AnomalyResponseDTO;
 import com.factory.management_service.domain.dto.EquipmentRecipeResponseDTO;
 import com.factory.management_service.domain.dto.EquipmentResponseDTO;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/equipments")
@@ -56,4 +58,17 @@ public class ManagementController {
 
         return ApiResponse.ofSuccess(response);
     }
+
+    @GetMapping("/dashboard")
+    public ApiResponse<List<EquipmentResponseDTO>> getDashboardList() {
+        List<EquipmentResponseDTO> response = managementService.getDashboardList();
+        return ApiResponse.ofSuccess(response);
+    }
+
+    @GetMapping("/severity")
+    public ApiResponse<List<AlertEquipmentResponseDTO>> getAlertEquipmentList() {
+        List<AlertEquipmentResponseDTO> response = managementService.getAlertEquipmentList();
+        return ApiResponse.ofSuccess(response);
+    }
+
 }

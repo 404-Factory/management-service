@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.factory.management_service.dao.AlertRepository;
 import com.factory.management_service.dao.AnomalyRepository;
 import com.factory.management_service.dao.EquipmentRecipeRepository;
 import com.factory.management_service.dao.EquipmentRepository;
+import com.factory.management_service.domain.dto.AlertEquipmentResponseDTO;
 import com.factory.management_service.domain.dto.AnomalyResponseDTO;
 import com.factory.management_service.domain.dto.EquipmentRecipeResponseDTO;
 import com.factory.management_service.domain.dto.EquipmentResponseDTO;
@@ -23,6 +25,31 @@ public class ManagementService {
     private final EquipmentRepository equipmentRepository;
     private final AnomalyRepository anomalyRepository;
     private final EquipmentRecipeRepository equipmentRecipeRepository;
+    private final AlertRepository alertRepository;
+
+    @Transactional(readOnly = true)
+    public List<EquipmentResponseDTO> getDashboardList() {
+        return equipmentRepository.findAll()
+                .stream()
+                .map(EquipmentResponseDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<AlertEquipmentResponseDTO> getAlertEquipmentList() {
+
+        return alertRepository.findUnreadAlertsWithEquipment()
+                .stream()
+                .map(alert -> AlertEquipmentResponseDTO.builder()
+                        .alertId(alert.getAlertId())
+                        .equipmentId(
+                                alert.getAnomalyLog()
+                                        .getEquipment()
+                                        .getEquipmentId())
+                        .severity(alert.getSeverity().name())
+                        .build())
+                .toList();
+    }
 
     @Transactional(readOnly = true)
     public List<EquipmentResponseDTO> getEquipmentList(Long processId) {
