@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.factory.management_service.dao.LotRepository;
 import com.factory.management_service.domain.entity.AnomalyEntity;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class DefectGeneratorService {
 
     private final RuleRegistry ruleRegistry;
@@ -27,8 +29,7 @@ public class DefectGeneratorService {
     /**
      * anomaly 기반 synthetic defect 생성
      */
-    public DefectEntity generate(
-            AnomalyEntity anomaly) {
+    public DefectEntity generate(AnomalyEntity anomaly) {
 
         // rule candidate 조회
         List<DefectCandidate> candidates = ruleRegistry.getCandidates(
@@ -41,7 +42,7 @@ public class DefectGeneratorService {
         }
 
         // weighted random defect 선택
-        DefectCandidate selected = WeightedRandomUtil.select(candidates);
+        DefectCandidate selected = selectCandidate(candidates);
 
         // 랜덤 lot 선택
         LotEntity lot = getRandomLot();
@@ -99,8 +100,7 @@ public class DefectGeneratorService {
     private LocalDateTime randomDetectedTime(
             LocalDateTime occurredTime) {
 
-        int minute = ThreadLocalRandom.current()
-                .nextInt(1, 31);
+        int minute = random.nextInt(30) + 1;
 
         return occurredTime.plusMinutes(minute);
     }
@@ -110,7 +110,7 @@ public class DefectGeneratorService {
      */
     private LotEntity getRandomLot() {
 
-        List<LotEntity> lots = lotRepository.findRunningLots();
+        List<LotEntity> lots = lotRepository.findAll();
 
         if (lots.isEmpty()) {
             return null;
@@ -130,19 +130,19 @@ public class DefectGeneratorService {
 
             case "Spin Speed",
                     "Soft Bake Temp" ->
-                "도포";
+                "DEPOSITION";
 
             case "Exposure Dose",
                     "PEB Temp" ->
-                "포토";
+                "PHOTO";
 
             case "Chamber Pressure",
                     "Chuck Temp" ->
-                "식각";
+                "ETCH";
 
             case "Chemical Temp",
                     "Chemical 농도" ->
-                "클리어";
+                "CLEANING";
 
             default -> "UNKNOWN";
         };
@@ -176,5 +176,28 @@ public class DefectGeneratorService {
 
             default -> 0L;
         };
+    }
+
+    private DefectCandidate selectCandidate(
+            List<DefectCandidate> candidates) {
+
+        int totalWeight = candidates.stream()
+                .mapToInt(DefectCandidate::getWeight)
+                .sum();
+
+        int randomValue = random.nextInt(totalWeight);
+
+        int cumulativeWeight = 0;
+
+        for (DefectCandidate candidate : candidates) {
+
+            cumulativeWeight += candidate.getWeight();
+
+            if (randomValue < cumulativeWeight) {
+                return candidate;
+            }
+        }
+
+        return candidates.get(0);
     }
 }
