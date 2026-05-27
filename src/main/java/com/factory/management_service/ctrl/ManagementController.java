@@ -4,7 +4,6 @@ import com.factory.common.core.dto.ApiResponse;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.factory.management_service.domain.dto.AlertEquipmentResponseDTO;
 import com.factory.management_service.domain.dto.AnomalyResponseDTO;
 import com.factory.management_service.domain.dto.EquipmentRecipeResponseDTO;
 import com.factory.management_service.domain.dto.EquipmentResponseDTO;

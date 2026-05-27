@@ -49,5 +49,5 @@ public class AnomalyEntity {
     private Integer sampleCount;
 
     @Column(name = "detection_reason", length = 500)
-    private String DetectionReason;
+    private String detectionReason;
 }
