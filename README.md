@@ -284,12 +284,6 @@ GET /equipments/dashboard
 ./gradlew bootRun
 ```
 
-또는
-
-```bash id="59pxga"
-docker compose up
-```
-
 ---
 
 # 환경 설정
