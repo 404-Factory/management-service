@@ -1,6 +1,15 @@
 server:
   port: 8086
 
+cloud:
+  aws:
+    s3:
+      bucket: S3_BUCKET
+    region: ap-northeast-2
+    credentials:
+      access-key: ${AWS_ACCESS_KEY_ID:}
+      secret-key: ${AWS_SECRET_ACCESS_KEY:}
+
 spring:
   application:
     name: management-service
