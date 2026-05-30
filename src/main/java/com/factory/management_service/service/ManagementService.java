@@ -52,7 +52,7 @@ public class ManagementService {
 
         @Transactional(readOnly = true)
         public List<AnomalyResponseDTO> getRecentAnomaly(Long equipmentId) {
-                LocalDateTime from = LocalDateTime.now().minusDays(7);
+                LocalDateTime from = LocalDateTime.now().minusDays(30);
                 return anomalyRepository.findRecentAnomaliesByEquipmentId(from, equipmentId)
                                 .stream()
                                 .map(AnomalyResponseDTO::fromEntity)
