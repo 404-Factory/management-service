@@ -1,6 +1,8 @@
 package com.factory.management_service.service;
 
 import com.factory.management_service.common.config.AwsS3Properties;
+import com.factory.management_service.dao.AnomalyRepository;
+import com.factory.management_service.dao.DefectRepository;
 import com.factory.management_service.domain.dto.MonthlySummaryResponseDTO;
 import com.factory.management_service.domain.dto.SensorSummaryDTO;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,13 +42,14 @@ public class S3SummaryService {
 
     private final S3Client s3Client;
     private final AwsS3Properties awsS3Properties;
+    private final DefectRepository defectRepository;
+    private final AnomalyRepository anomalyRepository;
 
     private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public MonthlySummaryResponseDTO getMonthlySummary(String equipmentName) {
         Map<String, List<Double>> avgByType = new LinkedHashMap<>();
         Map<String, String> unitByType = new LinkedHashMap<>();
-        long totalOutOfRecipe = 0;
 
         LocalDate today = LocalDate.now();
         for (int i = 1; i <= 30; i++) {
@@ -55,9 +59,12 @@ public class S3SummaryService {
             for (ParquetRow row : fetchRowsByPrefix(prefix)) {
                 avgByType.computeIfAbsent(row.sensorType(), k -> new ArrayList<>()).add(row.avgValue());
                 unitByType.put(row.sensorType(), row.unit());
-                totalOutOfRecipe += row.outOfRecipeCount();
             }
         }
+
+        LocalDateTime from = today.minusDays(30).atStartOfDay();
+        long totalDefects = defectRepository.countByEquipmentNameSince(equipmentName, from);
+        long totalAnomalies = anomalyRepository.countByEquipmentNameSince(equipmentName, from);
 
         List<SensorSummaryDTO> sensors = avgByType.entrySet().stream()
                 .map(e -> SensorSummaryDTO.builder()
@@ -68,7 +75,8 @@ public class S3SummaryService {
                 .collect(Collectors.toList());
 
         return MonthlySummaryResponseDTO.builder()
-                .totalOutOfRecipe(totalOutOfRecipe)
+                .totalDefects(totalDefects)
+                .totalAnomalies(totalAnomalies)
                 .sensors(sensors)
                 .build();
     }
@@ -189,8 +197,7 @@ public class S3SummaryService {
         return new ParquetRow(
                 g.getString("sensorType", 0),
                 g.getString("unit", 0),
-                g.getDouble("avg_value", 0),
-                g.getLong("out_of_recipe_count", 0)
+                g.getDouble("avg_value", 0)
         );
     }
 
@@ -198,5 +205,5 @@ public class S3SummaryService {
         return Math.round(value * 100.0) / 100.0;
     }
 
-    private record ParquetRow(String sensorType, String unit, double avgValue, long outOfRecipeCount) {}
+    private record ParquetRow(String sensorType, String unit, double avgValue) {}
 }

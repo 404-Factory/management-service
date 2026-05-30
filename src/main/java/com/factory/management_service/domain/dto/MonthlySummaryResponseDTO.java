@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MonthlySummaryResponseDTO {
-    private long totalOutOfRecipe;
+    private long totalDefects;
+    private long totalAnomalies;
     private List<SensorSummaryDTO> sensors;
 }
