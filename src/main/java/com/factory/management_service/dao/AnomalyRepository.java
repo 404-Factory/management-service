@@ -33,4 +33,15 @@ public interface AnomalyRepository extends JpaRepository<AnomalyEntity, Long> {
             """)
     List<AnomalyEntity> findRecentAnomaliesByEquipmentId(
             @Param("from") LocalDateTime from, @Param("equipmentId") Long equipmentId);
+
+    @Query("""
+                SELECT COUNT(a) FROM AnomalyEntity a
+                JOIN a.equipment e
+                WHERE e.equipmentName = :equipmentName
+                AND a.occurredTime >= :from
+            """)
+    long countByEquipmentNameSince(
+            @Param("equipmentName") String equipmentName,
+            @Param("from") LocalDateTime from
+    );
 }
