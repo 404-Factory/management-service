@@ -60,3 +60,7 @@ dependencies {
 tasks.named('test', Test) {
     useJUnitPlatform()
 }
+
+tasks.named('bootJar') {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
