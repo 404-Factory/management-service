@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
-@RequestMapping("/equipments")
+@RequestMapping("/api/equipments")
 @RequiredArgsConstructor
 public class ManagementController {
 

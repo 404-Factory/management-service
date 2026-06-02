@@ -22,4 +22,6 @@ public class EquipmentEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "process_id")
     private ProcessEntity process;
+
+    private Severity severity;
 }

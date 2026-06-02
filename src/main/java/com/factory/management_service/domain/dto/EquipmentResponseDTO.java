@@ -21,6 +21,8 @@ public class EquipmentResponseDTO {
     private Long processId;
     private String processName;
 
+    private String severity;
+
     public static EquipmentResponseDTO fromEntity(EquipmentEntity entity) {
         return builder()
                 .equipmentId(entity.getEquipmentId())
@@ -28,6 +30,8 @@ public class EquipmentResponseDTO {
 
                 .processId(entity.getProcess().getProcessId())
                 .processName(entity.getProcess().getProcessName())
+
+                .severity(entity.getSeverity().name())
 
                 .build();
     }

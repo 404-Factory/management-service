@@ -17,11 +17,6 @@ public class AlertEntity {
     @Column(name = "alert_id")
     private Long alertId;
 
-    // ANOMALY_LOG 테이블 FK
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "log_id", nullable = false)
-    private AnomalyEntity anomalyLog;
-
     @Column(name = "title", length = 200, nullable = false)
     private String title;
 
