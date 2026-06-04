@@ -5,6 +5,12 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import com.factory.management_service.domain.type.AlertSeverity;
+import com.factory.management_service.domain.type.AlertStatus;
+
 @Entity
 @Table(name = "ALERT")
 @Getter
@@ -17,22 +23,32 @@ public class AlertEntity {
     @Column(name = "alert_id")
     private Long alertId;
 
+    @Column(name = "anomaly_id", length = 100)
+    private String anomalyId;
+
+    @Column(name = "equipment_id", length = 100)
+    private String equipmentId;
+
     @Column(name = "title", length = 200, nullable = false)
     private String title;
 
     @Column(name = "message", length = 500, nullable = false)
     private String message;
 
-    @Column(name = "is_read", nullable = false)
-    private Boolean isRead;
-
-    @Column(name = "created_time", nullable = false)
-    private LocalDateTime createdTime;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 30, nullable = false)
+    private AlertStatus status;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "severity", length = 30, nullable = false)
-    private Severity severity;
+    private AlertSeverity severity;
 
-    @Column(name = "occurrence_count", nullable = false)
-    private Integer occurrenceCount;
+    @Column(name = "created_at", updatable = false, nullable = false)
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
 }

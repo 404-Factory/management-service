@@ -1,5 +1,7 @@
 package com.factory.management_service.domain.entity;
 
+import com.factory.management_service.domain.type.EquipmentStatus;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,5 +25,5 @@ public class EquipmentEntity {
     @JoinColumn(name = "process_id")
     private ProcessEntity process;
 
-    private Severity severity;
+    private EquipmentStatus status;
 }
