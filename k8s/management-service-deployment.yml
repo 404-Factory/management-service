@@ -22,7 +22,7 @@ spec:
             - containerPort: 8086
           envFrom:
             - secretRef:
-                name: management-secret
+                name: s3-secret
           resources:
             limits:
               memory: "512Mi"
