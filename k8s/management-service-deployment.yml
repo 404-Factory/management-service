@@ -25,6 +25,13 @@ spec:
                 name: s3-secret
             - secretRef:
                 name: rdb-secret
+          env:
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_MAX_POOL_SIZE
+              value: "5"
+            - name: DB_MIN_IDLE
+              value: "2"
           resources:
             limits:
               memory: "512Mi"
