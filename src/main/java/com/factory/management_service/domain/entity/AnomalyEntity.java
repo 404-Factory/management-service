@@ -46,6 +46,9 @@ public class AnomalyEntity {
     @Column(name = "anomaly_type", length = 50)
     private String anomalyType;
 
+    @Column(name = "log_type", length = 50)
+    private String logType;
+
     @Column(name = "window_start_time")
     private LocalDateTime windowStartTime;
 
@@ -54,4 +57,7 @@ public class AnomalyEntity {
 
     @Column(name = "detection_reason", length = 500)
     private String detectionReason;
+
+    @Column(name = "related_log_ids", length = 500)
+    private String relatedLogIds;
 }
