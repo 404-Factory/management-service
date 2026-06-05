@@ -23,6 +23,8 @@ spec:
           envFrom:
             - secretRef:
                 name: s3-secret
+            - secretRef:
+                name: rdb-secret
           resources:
             limits:
               memory: "512Mi"
