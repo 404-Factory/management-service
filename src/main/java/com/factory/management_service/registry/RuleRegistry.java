@@ -2,6 +2,8 @@ package com.factory.management_service.registry;
 
 import com.factory.management_service.domain.rule.DefectCandidate;
 import com.factory.management_service.domain.rule.RuleKey;
+import com.factory.management_service.domain.type.RuleName;
+
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +31,7 @@ public class RuleRegistry {
                 // =================================================
 
                 rules.put(
-                                new RuleKey("Spin Speed", "Nelson Rule 1"),
+                                new RuleKey("Spin Speed", RuleName.NELSON_RULE_1),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -42,7 +44,7 @@ public class RuleRegistry {
                                                                 20)));
 
                 rules.put(
-                                new RuleKey("Spin Speed", "Nelson Rule 2"),
+                                new RuleKey("Spin Speed", RuleName.BIAS_RATIO_RULE),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -55,7 +57,7 @@ public class RuleRegistry {
                                                                 30)));
 
                 rules.put(
-                                new RuleKey("Spin Speed", "Nelson Rule 3"),
+                                new RuleKey("Spin Speed", RuleName.NELSON_RULE_3),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -72,7 +74,7 @@ public class RuleRegistry {
                 // =================================================
 
                 rules.put(
-                                new RuleKey("Soft Bake Temperature", "Nelson Rule 1"),
+                                new RuleKey("Soft Bake Temperature", RuleName.NELSON_RULE_1),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -81,7 +83,7 @@ public class RuleRegistry {
                                                                 100)));
 
                 rules.put(
-                                new RuleKey("Soft Bake Temperature", "Nelson Rule 2"),
+                                new RuleKey("Soft Bake Temperature", RuleName.BIAS_RATIO_RULE),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -90,7 +92,7 @@ public class RuleRegistry {
                                                                 100)));
 
                 rules.put(
-                                new RuleKey("Soft Bake Temperature", "Nelson Rule 3"),
+                                new RuleKey("Soft Bake Temperature", RuleName.NELSON_RULE_3),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -107,7 +109,7 @@ public class RuleRegistry {
                 // =================================================
 
                 rules.put(
-                                new RuleKey("PEB", "Nelson Rule 1"),
+                                new RuleKey("PEB", RuleName.NELSON_RULE_1),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -116,7 +118,7 @@ public class RuleRegistry {
                                                                 100)));
 
                 rules.put(
-                                new RuleKey("PEB", "Nelson Rule 2"),
+                                new RuleKey("PEB", RuleName.BIAS_RATIO_RULE),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -129,7 +131,7 @@ public class RuleRegistry {
                                                                 30)));
 
                 rules.put(
-                                new RuleKey("PEB", "Nelson Rule 3"),
+                                new RuleKey("PEB", RuleName.NELSON_RULE_3),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -142,7 +144,7 @@ public class RuleRegistry {
                 // =================================================
 
                 rules.put(
-                                new RuleKey("Exposure Dose", "Nelson Rule 1"),
+                                new RuleKey("Exposure Dose", RuleName.NELSON_RULE_1),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -151,7 +153,7 @@ public class RuleRegistry {
                                                                 100)));
 
                 rules.put(
-                                new RuleKey("Exposure Dose", "Nelson Rule 2"),
+                                new RuleKey("Exposure Dose", RuleName.BIAS_RATIO_RULE),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -164,7 +166,7 @@ public class RuleRegistry {
                                                                 50)));
 
                 rules.put(
-                                new RuleKey("Exposure Dose", "Nelson Rule 3"),
+                                new RuleKey("Exposure Dose", RuleName.NELSON_RULE_3),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -184,7 +186,7 @@ public class RuleRegistry {
                 // =================================================
 
                 rules.put(
-                                new RuleKey("Chamber Pressure", "Nelson Rule 1"),
+                                new RuleKey("Chamber Pressure", RuleName.NELSON_RULE_1),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -193,7 +195,7 @@ public class RuleRegistry {
                                                                 100)));
 
                 rules.put(
-                                new RuleKey("Chamber Pressure", "Nelson Rule 2"),
+                                new RuleKey("Chamber Pressure", RuleName.BIAS_RATIO_RULE),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -202,7 +204,7 @@ public class RuleRegistry {
                                                                 100)));
 
                 rules.put(
-                                new RuleKey("Chamber Pressure", "Nelson Rule 3"),
+                                new RuleKey("Chamber Pressure", RuleName.NELSON_RULE_3),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -214,7 +216,7 @@ public class RuleRegistry {
                 // =================================================
 
                 rules.put(
-                                new RuleKey("Chuck Temperature", "Nelson Rule 1"),
+                                new RuleKey("Chuck Temperature", RuleName.NELSON_RULE_1),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -223,7 +225,7 @@ public class RuleRegistry {
                                                                 100)));
 
                 rules.put(
-                                new RuleKey("Chuck Temperature", "Nelson Rule 2"),
+                                new RuleKey("Chuck Temperature", RuleName.BIAS_RATIO_RULE),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -232,7 +234,7 @@ public class RuleRegistry {
                                                                 100)));
 
                 rules.put(
-                                new RuleKey("Chuck Temperature", "Nelson Rule 3"),
+                                new RuleKey("Chuck Temperature", RuleName.NELSON_RULE_3),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -245,7 +247,7 @@ public class RuleRegistry {
                 // =================================================
 
                 rules.put(
-                                new RuleKey("Chemical Temperature", "Nelson Rule 1"),
+                                new RuleKey("Chemical Temperature", RuleName.NELSON_RULE_1),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -254,7 +256,7 @@ public class RuleRegistry {
                                                                 100)));
 
                 rules.put(
-                                new RuleKey("Chemical Temperature", "Nelson Rule 2"),
+                                new RuleKey("Chemical Temperature", RuleName.BIAS_RATIO_RULE),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -267,7 +269,7 @@ public class RuleRegistry {
                                                                 40)));
 
                 rules.put(
-                                new RuleKey("Chemical Temperature", "Nelson Rule 3"),
+                                new RuleKey("Chemical Temperature", RuleName.NELSON_RULE_3),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -280,7 +282,7 @@ public class RuleRegistry {
                 // =================================================
 
                 rules.put(
-                                new RuleKey("Chemical Concentration", "Nelson Rule 1"),
+                                new RuleKey("Chemical Concentration", RuleName.NELSON_RULE_1),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -293,7 +295,7 @@ public class RuleRegistry {
                                                                 50)));
 
                 rules.put(
-                                new RuleKey("Chemical Concentration", "Nelson Rule 2"),
+                                new RuleKey("Chemical Concentration", RuleName.BIAS_RATIO_RULE),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -306,7 +308,7 @@ public class RuleRegistry {
                                                                 60)));
 
                 rules.put(
-                                new RuleKey("Chemical Concentration", "Nelson Rule 3"),
+                                new RuleKey("Chemical Concentration", RuleName.NELSON_RULE_3),
 
                                 List.of(
                                                 new DefectCandidate(
@@ -322,7 +324,7 @@ public class RuleRegistry {
 
         public List<DefectCandidate> getCandidates(
                         String recipeParameter,
-                        String ruleName) {
+                        RuleName ruleName) {
 
                 return rules.getOrDefault(
                                 new RuleKey(recipeParameter, ruleName),

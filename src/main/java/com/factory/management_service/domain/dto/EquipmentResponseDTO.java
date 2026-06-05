@@ -1,6 +1,7 @@
 package com.factory.management_service.domain.dto;
 
 import com.factory.management_service.domain.entity.EquipmentEntity;
+import com.factory.management_service.domain.type.EquipmentStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,8 @@ public class EquipmentResponseDTO {
     private Long processId;
     private String processName;
 
+    private EquipmentStatus status;
+
     public static EquipmentResponseDTO fromEntity(EquipmentEntity entity) {
         return builder()
                 .equipmentId(entity.getEquipmentId())
@@ -28,6 +31,8 @@ public class EquipmentResponseDTO {
 
                 .processId(entity.getProcess().getProcessId())
                 .processName(entity.getProcess().getProcessName())
+
+                .status(entity.getStatus())
 
                 .build();
     }

@@ -9,21 +9,36 @@ import com.factory.management_service.domain.entity.AnomalyEntity;
 @Service
 public class DefectProbabilityService {
 
-    /**
-     * anomaly 발생 시
-     * defect 생성 여부 확률
-     *
-     * 현재는 테스트용 고정값 사용
-     */
-    private static final int DEFAULT_GENERATE_RATE = 30;
+    private static final int CAUTION_RATE = 15;
+    private static final int CRITICAL_RATE = 50;
+    private static final int DEFAULT_RATE = 10;
 
     private final Random random = new Random();
 
-    public boolean shouldGenerate(
-            AnomalyEntity anomalyLog) {
+    public boolean shouldGenerate(AnomalyEntity anomalyLog) {
+
+        int generateRate = getGenerateRate(anomalyLog);
 
         int value = random.nextInt(100);
 
-        return value < DEFAULT_GENERATE_RATE;
+        return value < generateRate;
+    }
+
+    private int getGenerateRate(AnomalyEntity anomalyLog) {
+
+        if (anomalyLog == null || anomalyLog.getSeverity() == null) {
+            return DEFAULT_RATE;
+        }
+
+        switch (anomalyLog.getSeverity()) {
+            case CAUTION:
+                return CAUTION_RATE;
+
+            case CRITICAL:
+                return CRITICAL_RATE;
+
+            default:
+                return DEFAULT_RATE;
+        }
     }
 }

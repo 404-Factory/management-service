@@ -1,4 +1,4 @@
-package com.example.management_service;
+package com.factory.management_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
