@@ -25,5 +25,7 @@ public class EquipmentEntity {
     @JoinColumn(name = "process_id")
     private ProcessEntity process;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 30)
     private EquipmentStatus status;
 }
