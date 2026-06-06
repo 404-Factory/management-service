@@ -10,7 +10,8 @@ import com.factory.management_service.dao.EquipmentRepository;
 import com.factory.management_service.domain.entity.AnomalyEntity;
 import com.factory.management_service.domain.entity.EquipmentEntity;
 import com.factory.management_service.domain.entity.EquipmentRecipeEntity;
-import com.factory.management_service.domain.entity.Severity;
+import com.factory.management_service.domain.type.AnomalySeverity;
+import com.factory.management_service.domain.type.RuleName;
 import com.factory.management_service.kafka.event.AnomalyDetectedEvent;
 
 import lombok.RequiredArgsConstructor;
@@ -21,35 +22,35 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AnomalyDetectedConsumer {
 
-    private final EquipmentRepository equipmentRepository;
-    private final EquipmentRecipeRepository equipmentRecipeRepository;
-    private final AnomalyRepository anomalyRepository;
+        private final EquipmentRepository equipmentRepository;
+        private final EquipmentRecipeRepository equipmentRecipeRepository;
+        private final AnomalyRepository anomalyRepository;
 
-    @KafkaListener(topics = "anomaly.detected", groupId = "management-service")
-    @Transactional
-    public void consume(AnomalyDetectedEvent event) {
+        @KafkaListener(topics = "anomaly.detected", groupId = "management-service")
+        @Transactional
+        public void consume(AnomalyDetectedEvent event) {
 
-        log.info("consume anomaly event : {}", event);
+                log.info("consume anomaly event : {}", event);
 
-        EquipmentEntity equipment = equipmentRepository.getReferenceById(
-                event.getEquipmentId());
+                EquipmentEntity equipment = equipmentRepository.getReferenceById(
+                                event.getEquipmentId());
 
-        EquipmentRecipeEntity recipe = equipmentRecipeRepository.getReferenceById(
-                event.getEquipmentRecipeId());
+                EquipmentRecipeEntity recipe = equipmentRecipeRepository.getReferenceById(
+                                event.getEquipmentRecipeId());
 
-        AnomalyEntity entity = AnomalyEntity.builder()
-                .equipment(equipment)
-                .equipmentRecipe(recipe)
-                .recipeParameter(event.getRecipeParameter())
-                .severity(Severity.valueOf(event.getSeverity()))
-                .occurredTime(event.getOccurredTime())
-                .causeRule(event.getCauseRule())
-                .anomalyType(event.getAnomalyType())
-                .windowStartTime(event.getWindowStartTime())
-                .sampleCount(event.getSampleCount())
-                .detectionReason(event.getDetectionReason())
-                .build();
+                AnomalyEntity entity = AnomalyEntity.builder()
+                                .equipment(equipment)
+                                .equipmentRecipe(recipe)
+                                .recipeParameter(event.getRecipeParameter())
+                                .severity(AnomalySeverity.valueOf(event.getSeverity()))
+                                .occurredTime(event.getOccurredTime())
+                                .causeRule(RuleName.valueOf(event.getCauseRule()))
+                                .anomalyType(event.getAnomalyType())
+                                .windowStartTime(event.getWindowStartTime())
+                                .sampleCount(event.getSampleCount())
+                                .detectionReason(event.getDetectionReason())
+                                .build();
 
-        anomalyRepository.save(entity);
-    }
+                anomalyRepository.save(entity);
+        }
 }

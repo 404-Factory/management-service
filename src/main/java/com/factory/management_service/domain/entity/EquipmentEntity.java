@@ -1,5 +1,7 @@
 package com.factory.management_service.domain.entity;
 
+import com.factory.management_service.domain.type.EquipmentStatus;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,4 +24,8 @@ public class EquipmentEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "process_id")
     private ProcessEntity process;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 30)
+    private EquipmentStatus status;
 }

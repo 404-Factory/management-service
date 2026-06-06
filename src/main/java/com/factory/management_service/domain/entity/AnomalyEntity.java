@@ -5,6 +5,9 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+import com.factory.management_service.domain.type.AnomalySeverity;
+import com.factory.management_service.domain.type.RuleName;
+
 @Entity
 @Table(name = "ANOMALY_LOG")
 @Getter
@@ -31,16 +34,20 @@ public class AnomalyEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "severity", length = 30)
-    private Severity severity;
+    private AnomalySeverity severity;
 
     @Column(name = "occurred_time")
     private LocalDateTime occurredTime;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "rule_name", length = 50)
-    private String causeRule;
+    private RuleName causeRule;
 
     @Column(name = "anomaly_type", length = 50)
     private String anomalyType;
+
+    @Column(name = "log_type", length = 50)
+    private String logType;
 
     @Column(name = "window_start_time")
     private LocalDateTime windowStartTime;
@@ -50,4 +57,7 @@ public class AnomalyEntity {
 
     @Column(name = "detection_reason", length = 500)
     private String detectionReason;
+
+    @Column(name = "related_log_ids", length = 500)
+    private String relatedLogIds;
 }

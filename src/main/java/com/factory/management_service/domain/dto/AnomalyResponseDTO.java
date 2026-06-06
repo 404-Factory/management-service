@@ -3,7 +3,8 @@ package com.factory.management_service.domain.dto;
 import java.time.LocalDateTime;
 
 import com.factory.management_service.domain.entity.AnomalyEntity;
-import com.factory.management_service.domain.entity.Severity;
+import com.factory.management_service.domain.type.AnomalySeverity;
+import com.factory.management_service.domain.type.RuleName;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,9 +27,9 @@ public class AnomalyResponseDTO {
     private Long equipmentRecipeId;
 
     private String recipeParameter;
-    private Severity severity;
+    private AnomalySeverity severity;
     private LocalDateTime occurredTime;
-    private String causeRule;
+    private RuleName causeRule;
 
     public static AnomalyResponseDTO fromEntity(AnomalyEntity entity) {
         return builder()

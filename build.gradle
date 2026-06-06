@@ -49,6 +49,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	compileOnly 'org.projectlombok:lombok'
 
+	// Dotenv
+	implementation 'me.paulschwarz:spring-dotenv:4.0.0'
+
 	// Configuration metadata (IDE property validation)
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
