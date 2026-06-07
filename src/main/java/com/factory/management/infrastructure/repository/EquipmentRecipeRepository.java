@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface EquipmentRecipeRepository extends JpaRepository<EquipmentRecipe, Long> {
 
     @EntityGraph(attributePaths = "details")
-    Optional<EquipmentRecipe> findTopByEquipment_EquipmentIdOrderByVersionDesc(
+    Optional<EquipmentRecipe> findTopByEquipment_IdOrderByVersionDesc(
         Long equipmentId);
 }

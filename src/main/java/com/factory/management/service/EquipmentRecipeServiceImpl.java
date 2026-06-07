@@ -21,7 +21,7 @@ public class EquipmentRecipeServiceImpl implements EquipmentRecipeService {
     public EquipmentRecipeResponse getEquipmentRecipeByEquipmentId(Long equipmentId) {
 
         return equipmentRecipeRepository
-            .findTopByEquipment_EquipmentIdOrderByVersionDesc(equipmentId)
+            .findTopByEquipment_IdOrderByVersionDesc(equipmentId)
             .map(equipmentRecipeMapper::toDto)
             .orElseThrow(
                 () -> new ManagementException(ManagementErrorCode.EQUIPMENT_RECIPE_NOT_FOUND)
