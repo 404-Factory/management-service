@@ -24,8 +24,8 @@ public class EquipmentRepositorySupportImpl implements EquipmentRepositorySuppor
             .select(getEquipmentResponseProjection())
             .from(equipment)
             .where(
-                eqStatus(status),
-                eqProcessId(processId)
+                statusEq(status),
+                processIdEq(processId)
             )
             .fetch();
     }
@@ -40,11 +40,11 @@ public class EquipmentRepositorySupportImpl implements EquipmentRepositorySuppor
             .fetchOne();
     }
 
-    private BooleanExpression eqStatus(String status) {
+    private BooleanExpression statusEq(String status) {
         return status != null ? equipment.status.eq(EquipmentStatus.fromCode(status)) : null;
     }
 
-    private BooleanExpression eqProcessId(Long processId) {
+    private BooleanExpression processIdEq(Long processId) {
         return processId != null ? equipment.process.id.eq(processId) : null;
     }
 

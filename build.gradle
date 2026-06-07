@@ -1,6 +1,7 @@
 plugins {
     id 'com.factory.spring-application-conventions'
 	id 'com.factory.maven-consumer-conventions'
+	id 'org.jetbrains.kotlin.jvm'
 }
 
 version = '1.0.0'
@@ -68,8 +69,15 @@ dependencies {
 	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 tasks.named('test', Test) {
     useJUnitPlatform()
+}
+repositories {
+	mavenCentral()
+}
+kotlin {
+	jvmToolchain(17)
 }
