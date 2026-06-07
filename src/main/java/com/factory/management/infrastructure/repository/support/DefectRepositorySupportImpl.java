@@ -8,11 +8,9 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 import static com.factory.management.infrastructure.entity.QDefect.defect;
 
-@Repository
 @RequiredArgsConstructor
 public class DefectRepositorySupportImpl implements DefectRepositorySupport {
 
