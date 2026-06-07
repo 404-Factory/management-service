@@ -4,7 +4,7 @@ import com.factory.management.dto.response.EquipmentRecipeResponse;
 import com.factory.management.exception.ManagementErrorCode;
 import com.factory.management.exception.ManagementException;
 import com.factory.management.infrastructure.repository.EquipmentRecipeRepository;
-import com.factory.management.mapper.EquipmentRecipeMapper;
+import com.factory.management.infrastructure.mapper.EquipmentRecipeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

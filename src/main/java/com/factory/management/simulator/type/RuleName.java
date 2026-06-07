@@ -1,4 +1,4 @@
-package com.factory.management.domain.type;
+package com.factory.management.simulator.type;
 
 public enum RuleName {
     NELSON_RULE_1,

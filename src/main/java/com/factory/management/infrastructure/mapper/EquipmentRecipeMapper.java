@@ -1,4 +1,4 @@
-package com.factory.management.mapper;
+package com.factory.management.infrastructure.mapper;
 
 import com.factory.management.dto.response.EquipmentRecipeResponse;
 import com.factory.management.infrastructure.entity.EquipmentRecipe;

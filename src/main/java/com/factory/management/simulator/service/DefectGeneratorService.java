@@ -1,4 +1,4 @@
-package com.factory.management.service;
+package com.factory.management.simulator.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.factory.management.infrastructure.repository.LotRepository;
 import com.factory.management.domain.entity.DefectEntity;
-import com.factory.management.domain.rule.DefectCandidate;
-import com.factory.management.registry.RuleRegistry;
+import com.factory.management.simulator.rule.DefectCandidate;
+import com.factory.management.simulator.registry.RuleRegistry;
 
 import lombok.RequiredArgsConstructor;
 

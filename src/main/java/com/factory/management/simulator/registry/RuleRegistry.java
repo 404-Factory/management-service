@@ -1,8 +1,8 @@
-package com.factory.management.registry;
+package com.factory.management.simulator.registry;
 
-import com.factory.management.domain.rule.DefectCandidate;
-import com.factory.management.domain.rule.RuleKey;
-import com.factory.management.domain.type.RuleName;
+import com.factory.management.simulator.rule.DefectCandidate;
+import com.factory.management.simulator.rule.RuleKey;
+import com.factory.management.simulator.type.RuleName;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;

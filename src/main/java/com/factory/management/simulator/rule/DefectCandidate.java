@@ -1,4 +1,4 @@
-package com.factory.management.domain.rule;
+package com.factory.management.simulator.rule;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

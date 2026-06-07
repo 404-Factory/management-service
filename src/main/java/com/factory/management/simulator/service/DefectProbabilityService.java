@@ -1,4 +1,4 @@
-package com.factory.management.service;
+package com.factory.management.simulator.service;
 
 import java.util.Random;
 
