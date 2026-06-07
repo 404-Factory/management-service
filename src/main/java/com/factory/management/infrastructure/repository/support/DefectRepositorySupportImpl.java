@@ -1,7 +1,5 @@
 package com.factory.management.infrastructure.repository.support;
 
-import com.factory.management.dto.response.DefectCountResponse;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.Instant;
@@ -19,13 +17,10 @@ public class DefectRepositorySupportImpl implements DefectRepositorySupport {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public DefectCountResponse getDefectCount(String equipmentName, LocalDate startDate, LocalDate endDate) {
+    public long getDefectCount(String equipmentName, LocalDate startDate, LocalDate endDate) {
 
-        return queryFactory
-            .select(Projections.constructor(
-                DefectCountResponse.class,
-                defect.count()
-            ))
+        Long result = queryFactory
+            .select(defect.count())
             .from(defect)
             .where(
                 equipmentNameEq(equipmentName),
@@ -33,6 +28,8 @@ public class DefectRepositorySupportImpl implements DefectRepositorySupport {
                 occurredTimeLt(endDate)
             )
             .fetchOne();
+
+        return result != null ? result: 0L;
     }
 
     private BooleanExpression equipmentNameEq(String equipmentName) {

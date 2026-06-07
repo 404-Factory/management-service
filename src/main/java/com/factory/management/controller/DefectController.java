@@ -1,7 +1,6 @@
 package com.factory.management.controller;
 
 import com.factory.management.dto.request.CountSearchCondition;
-import com.factory.management.dto.response.DefectCountResponse;
 import com.factory.management.service.DefectService;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ public class DefectController {
     private final DefectService defectService;
 
     @GetMapping("/count")
-    public ResponseEntity<DefectCountResponse> getCount(
+    public ResponseEntity<Long> getCount(
         @ModelAttribute CountSearchCondition condition) {
         String equipmentName = condition.getEquipmentName();
         LocalDate startDate = condition.getStartDate();

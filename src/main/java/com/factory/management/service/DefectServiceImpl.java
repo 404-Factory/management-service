@@ -1,6 +1,5 @@
 package com.factory.management.service;
 
-import com.factory.management.dto.response.DefectCountResponse;
 import com.factory.management.infrastructure.repository.DefectRepository;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,7 @@ public class DefectServiceImpl implements DefectService {
 
     @Override
     @Transactional(readOnly = true)
-    public DefectCountResponse getCount(String equipmentName, LocalDate startDate, LocalDate endDate) {
+    public long getCount(String equipmentName, LocalDate startDate, LocalDate endDate) {
 
         return defectRepository.getDefectCount(equipmentName, startDate, endDate);
     }

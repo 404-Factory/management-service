@@ -2,7 +2,9 @@ package com.factory.management.infrastructure.enums;
 
 import com.factory.management.exception.ManagementErrorCode;
 import com.factory.management.exception.ManagementException;
+import lombok.Getter;
 
+@Getter
 public enum EquipmentStatus {
     NORMAL("normal"),
     WARNING("warning"),
