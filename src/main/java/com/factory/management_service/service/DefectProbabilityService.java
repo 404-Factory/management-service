@@ -4,7 +4,7 @@ import java.util.Random;
 
 import org.springframework.stereotype.Service;
 
-import com.factory.management_service.domain.entity.AnomalyEntity;
+import com.factory.common.event.payload.AnomalyDetectedEventPayload;
 
 @Service
 public class DefectProbabilityService {
@@ -15,7 +15,7 @@ public class DefectProbabilityService {
 
     private final Random random = new Random();
 
-    public boolean shouldGenerate(AnomalyEntity anomalyLog) {
+    public boolean shouldGenerate(AnomalyDetectedEventPayload anomalyLog) {
 
         int generateRate = getGenerateRate(anomalyLog);
 
@@ -24,21 +24,17 @@ public class DefectProbabilityService {
         return value < generateRate;
     }
 
-    private int getGenerateRate(AnomalyEntity anomalyLog) {
+    private int getGenerateRate(AnomalyDetectedEventPayload anomalyLog) {
 
         if (anomalyLog == null || anomalyLog.getSeverity() == null) {
             return DEFAULT_RATE;
         }
 
-        switch (anomalyLog.getSeverity()) {
-            case CAUTION:
-                return CAUTION_RATE;
-
-            case CRITICAL:
-                return CRITICAL_RATE;
-
-            default:
-                return DEFAULT_RATE;
-        }
+        String severity = anomalyLog.getSeverity().toUpperCase().trim();
+        return switch (severity) {
+            case "CAUTION" -> CAUTION_RATE;
+            case "CRITICAL" -> CRITICAL_RATE;
+            default -> DEFAULT_RATE;
+        };
     }
 }

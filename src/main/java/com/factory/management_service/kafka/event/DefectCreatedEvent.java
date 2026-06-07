@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 @Builder
 public class DefectCreatedEvent {
 
+    @Builder.Default
+    private String eventType = "DefectCreated";
+
     private Long defectId;
 
     private Long lotId;

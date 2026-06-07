@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 public class DefectEventProducer {
     private final KafkaTemplate<String, DefectCreatedEvent> kafkaTemplate;
 
-    private static final String TOPIC = "defect.created";
+    private static final String TOPIC = "management-event";
 
     public void publish(DefectCreatedEvent event) {
 

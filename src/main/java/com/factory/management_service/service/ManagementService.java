@@ -7,10 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.factory.management_service.dao.AnomalyRepository;
 import com.factory.management_service.dao.EquipmentRecipeRepository;
 import com.factory.management_service.dao.EquipmentRepository;
-import com.factory.management_service.domain.dto.AnomalyResponseDTO;
 import com.factory.management_service.domain.dto.EquipmentRecipeResponseDTO;
 import com.factory.management_service.domain.dto.EquipmentResponseDTO;
 import com.factory.management_service.domain.entity.EquipmentEntity;
@@ -22,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ManagementService {
         private final EquipmentRepository equipmentRepository;
-        private final AnomalyRepository anomalyRepository;
         private final EquipmentRecipeRepository equipmentRecipeRepository;
 
         @Transactional(readOnly = true)
@@ -48,15 +45,6 @@ public class ManagementService {
                                 .orElseThrow(() -> new RuntimeException("설비를 찾을 수 없습니다."));
                 new EquipmentResponseDTO();
                 return EquipmentResponseDTO.fromEntity(response);
-        }
-
-        @Transactional(readOnly = true)
-        public List<AnomalyResponseDTO> getRecentAnomaly(Long equipmentId) {
-                LocalDateTime from = LocalDateTime.now().minusDays(30);
-                return anomalyRepository.findRecentAnomaliesByEquipmentId(from, equipmentId)
-                                .stream()
-                                .map(AnomalyResponseDTO::fromEntity)
-                                .collect(Collectors.toList());
         }
 
         @Transactional(readOnly = true)

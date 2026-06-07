@@ -8,13 +8,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.factory.management_service.dao.LotRepository;
-import com.factory.management_service.domain.entity.AnomalyEntity;
+import com.factory.management_service.dao.EquipmentRepository;
+import com.factory.common.event.payload.AnomalyDetectedEventPayload;
 import com.factory.management_service.domain.entity.DefectEntity;
 import com.factory.management_service.domain.entity.LotEntity;
+import com.factory.management_service.domain.entity.EquipmentEntity;
 import com.factory.management_service.domain.rule.DefectCandidate;
+import com.factory.management_service.domain.type.RuleName;
 import com.factory.management_service.registry.RuleRegistry;
 
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Service
 @RequiredArgsConstructor
@@ -23,18 +29,19 @@ public class DefectGeneratorService {
 
     private final RuleRegistry ruleRegistry;
     private final LotRepository lotRepository;
+    private final EquipmentRepository equipmentRepository;
 
     private final Random random = new Random();
 
     /**
      * anomaly 기반 synthetic defect 생성
      */
-    public DefectEntity generate(AnomalyEntity anomaly) {
+    public DefectEntity generate(AnomalyDetectedEventPayload anomaly) {
 
         // rule candidate 조회
         List<DefectCandidate> candidates = ruleRegistry.getCandidates(
                 anomaly.getRecipeParameter(),
-                anomaly.getCauseRule());
+                RuleName.valueOf(anomaly.getCauseRule()));
 
         // rule 없으면 생성 안함
         if (candidates.isEmpty()) {
@@ -51,6 +58,11 @@ public class DefectGeneratorService {
             return null;
         }
 
+        EquipmentEntity equipment = equipmentRepository.findById(anomaly.getEquipmentId())
+                .orElse(null);
+
+        LocalDateTime occurredTime = LocalDateTime.ofInstant(anomaly.getOccurredTime(), ZoneOffset.UTC);
+
         return DefectEntity.builder()
 
                 .lot(lot)
@@ -62,22 +74,18 @@ public class DefectGeneratorService {
                         selected.getDefectCode())
 
                 // 실제 발생 시각
-                .occurredTime(
-                        anomaly.getOccurredTime())
+                .occurredTime(occurredTime)
 
                 // defect 검출 시각
                 .detectedTime(
-                        randomDetectedTime(
-                                anomaly.getOccurredTime()))
+                        randomDetectedTime(occurredTime))
 
                 // 원인 설비 snapshot
                 .causeEquipmentId(
-                        anomaly.getEquipment()
-                                .getEquipmentId())
+                        anomaly.getEquipmentId())
 
                 .causeEquipmentName(
-                        anomaly.getEquipment()
-                                .getEquipmentName())
+                        equipment != null ? equipment.getEquipmentName() : "UNKNOWN")
 
                 // 원인 공정 snapshot
                 .causeProcessId(
