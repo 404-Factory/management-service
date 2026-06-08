@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/managemnt/defects")
+@RequestMapping("/api/management/defects")
 @RequiredArgsConstructor
 public class DefectController {
 

@@ -1,28 +1,36 @@
 package com.factory.management.controller;
 
+import com.factory.common.contract.autoconfigure.ContractAutoConfiguration;
 import com.factory.management.service.DefectService;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ActiveProfiles("test")
 @WebMvcTest(controllers = DefectController.class)
+@ImportAutoConfiguration({
+    ContractAutoConfiguration.class
+})
 class DefectControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private DefectService defectService;
 
     @Test
@@ -35,12 +43,16 @@ class DefectControllerTest {
         when(defectService.getCount(eq(equipmentName), eq(startDate), eq(endDate))).thenReturn(42L);
 
         // when & then
-        mockMvc.perform(get("/api/managemnt/defects/count")
+        mockMvc.perform(get("/api/management/defects/count")
                 .param("equipmentName", equipmentName)
                 .param("startDate", "2026-06-08")
                 .param("endDate", "2026-06-08")
                 .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(content().string("42"));
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.status").value(200))
+            .andExpect(jsonPath("$.message").value("success"))
+            .andExpect(jsonPath("$.data").value(42L));;
     }
 }
