@@ -1,15 +1,6 @@
 server:
   port: 8080
 
-cloud:
-  aws:
-    s3:
-      bucket: ${S3_BUCKET_NAME}
-    region: ap-northeast-2
-    credentials:
-      access-key: ${AWS_ACCESS_KEY_ID:}
-      secret-key: ${AWS_SECRET_ACCESS_KEY:}
-
 spring:
   application:
     name: management-service
@@ -39,5 +30,8 @@ spring:
 sigma:
   event:
     consumer:
-      topics: management-event
-      groupId: management-consumer-group
+      topics:
+        - "management-event"
+      groupId: "management-consumer-group"
+
+logging.level.org.springframework.boot.context.properties: DEBUG

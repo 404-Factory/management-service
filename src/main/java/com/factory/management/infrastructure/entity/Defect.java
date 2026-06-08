@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -49,4 +50,20 @@ public class Defect {
 
     @Column(length = 100)
     private String causeEquipmentName;
+
+    @Builder
+    public Defect(Long id, Lot lot, String defectType, String defectCode, Instant detectedTime,
+        Instant occurredTime, Long causeProcessId, String causeProcessName, Long causeEquipmentId,
+        String causeEquipmentName) {
+        this.id = id;
+        this.lot = lot;
+        this.defectType = defectType;
+        this.defectCode = defectCode;
+        this.detectedTime = detectedTime;
+        this.occurredTime = occurredTime;
+        this.causeProcessId = causeProcessId;
+        this.causeProcessName = causeProcessName;
+        this.causeEquipmentId = causeEquipmentId;
+        this.causeEquipmentName = causeEquipmentName;
+    }
 }
