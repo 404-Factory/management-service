@@ -1,4 +1,4 @@
-package com.factory.management.event.payload.type;
+package com.factory.management.event.type;
 
 import com.factory.common.event.domain.EventType;
 

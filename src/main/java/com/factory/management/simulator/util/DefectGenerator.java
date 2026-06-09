@@ -1,9 +1,8 @@
 package com.factory.management.simulator.util;
 
-import com.factory.management.event.payload.AnomalyCreatedPayload;
+import com.factory.management.event.consume.payload.AnomalyCreatedPayload;
 import com.factory.management.infrastructure.entity.Defect;
 import com.factory.management.infrastructure.entity.Lot;
-import com.factory.management.infrastructure.repository.LotRepository;
 import com.factory.management.service.LotService;
 import com.factory.management.simulator.registry.RuleRegistry;
 import com.factory.management.simulator.rule.DefectCandidate;
@@ -14,7 +13,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 

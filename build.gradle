@@ -10,6 +10,7 @@ dependencies {
 	implementation 'com.factory.common:contract:1.0.5'
 	implementation 'com.factory.common:kafka:1.0.5'
 	implementation 'com.factory.common:inbox-jpa:1.0.5'
+	implementation 'com.factory.common:outbox-jpa:1.0.5'
 
 	// platform BOM
 	implementation platform('com.factory:platform:1.0.5')

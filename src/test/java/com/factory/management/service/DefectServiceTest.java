@@ -1,6 +1,6 @@
 package com.factory.management.service;
 
-import com.factory.management.event.payload.AnomalyCreatedPayload;
+import com.factory.management.event.consume.payload.AnomalyCreatedPayload;
 import com.factory.management.infrastructure.entity.Defect;
 import com.factory.management.infrastructure.repository.DefectRepository;
 import com.factory.management.simulator.util.DefectGenerator;

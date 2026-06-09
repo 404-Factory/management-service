@@ -1,4 +1,4 @@
-package com.factory.management.event.payload;
+package com.factory.management.event.consume.payload;
 
 import com.factory.common.event.domain.EventPayload;
 import java.time.Instant;

@@ -1,7 +1,6 @@
 package com.factory.management.simulator.util;
 
-import com.factory.common.kafka.config.SigmaKafkaProperties;
-import com.factory.management.event.payload.AnomalyCreatedPayload;
+import com.factory.management.event.consume.payload.AnomalyCreatedPayload;
 import java.util.Random;
 
 import org.springframework.stereotype.Service;
