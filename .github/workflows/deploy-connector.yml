@@ -5,7 +5,7 @@ on:
   push:
     branches: [main, feat/ci]
     paths:
-      - 'k8s/connector.yaml'
+      - 'k8s/connector/connector.yaml'
 
 jobs:
   deploy-connector:
