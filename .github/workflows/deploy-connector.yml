@@ -6,6 +6,7 @@ on:
     branches: [main, feat/ci]
     paths:
       - 'k8s/connector/connector.yaml'
+      - '.github/workflows/deploy-connector.yml'
 
 jobs:
   deploy-connector:
