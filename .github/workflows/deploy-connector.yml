@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy-connector:
-    uses: 404-Factory/.github/.github/workflows/reusable-deploy-connector.yml@main
+    uses: 404-Factory/.github/.github/workflows/reusable-deploy-connector.yml@dev
     with:
       service-name: "management"
       db-name: "management_db"
