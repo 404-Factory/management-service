@@ -3,8 +3,16 @@ name: CI/CD Test
 on:
   push:
     branches: [feat/ci]
+    paths-ignore:
+      - 'k8s/**'
+      - '**.md'
+      - '.github/workflows/deploy-connector.yml'
   pull_request:
     branches: [feat/ci]
+    paths-ignore:
+      - 'k8s/**'
+      - '**.md'
+      - '.github/workflows/deploy-connector.yml'
 
 jobs:
   build:
