@@ -6,7 +6,7 @@ spring:
     name: management-service
 
   profiles:
-    active: local
+    active: dev
 
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
