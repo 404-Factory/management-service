@@ -3,8 +3,16 @@ name: CI/CD
 on:
   push:
     branches: [main, develop]
+    paths-ignore:
+      - 'k8s/**'
+      - '**.md'
+      - '.github/workflows/deploy-connector.yml'
   pull_request:
     branches: [main, develop]
+    paths-ignore:
+      - 'k8s/**'
+      - '**.md'
+      - '.github/workflows/deploy-connector.yml'
 
 jobs:
   build:
@@ -33,9 +41,10 @@ jobs:
       eks-cluster-name: sigma-eks-cluster
       deploy-environment: production
       aws-region: ap-northeast-2
+      namespace: management
       image: ${{ needs.build.outputs.image }}
       image-tag: ${{ needs.build.outputs.tag }}
-      manifest-dir: k8s
+      manifest-dir: k8s/app
     secrets:
       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
