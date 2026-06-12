@@ -36,8 +36,8 @@ public class DefectGenerator {
         }
         // rule candidate 조회
         List<DefectCandidate> candidates = ruleRegistry.getCandidates(
-            anomaly.getRecipeParameter(),
-            RuleName.valueOf(anomaly.getCauseRule()));
+                anomaly.getRecipeParameter(),
+                RuleName.valueOf(anomaly.getCauseRule()));
 
         // rule 없으면 생성 안함
         if (candidates.isEmpty()) {
@@ -48,33 +48,33 @@ public class DefectGenerator {
         DefectCandidate selected = selectCandidate(candidates);
 
         // 랜덤 lot 선택
-        Lot lot = getRandomLot();
+        Lot lot = getRandomLot(anomaly.getEquipmentId());
 
         if (lot == null) {
             return null;
         }
 
         return Defect.builder()
-            .lot(lot)
-            .defectType(selected.getDefectType())
-            .defectCode(selected.getDefectCode())
-            // 실제 발생 시각
-            .occurredTime(anomaly.getOccurredTime())
-            // defect 검출 시각
-            .detectedTime(
-                randomDetectedTime(
-                    anomaly.getOccurredTime()))
-            // 원인 설비 snapshot
-            .causeEquipmentId(anomaly.getEquipmentId())
-            .causeEquipmentName(anomaly.getEquipmentName())
-            // 원인 공정 snapshot
-            .causeProcessId(
-                processId(
-                    anomaly.getRecipeParameter()))
-            .causeProcessName(
-                processName(
-                    anomaly.getRecipeParameter()))
-            .build();
+                .lot(lot)
+                .defectType(selected.getDefectType())
+                .defectCode(selected.getDefectCode())
+                // 실제 발생 시각
+                .occurredTime(anomaly.getOccurredTime())
+                // defect 검출 시각
+                .detectedTime(
+                        randomDetectedTime(
+                                anomaly.getOccurredTime()))
+                // 원인 설비 snapshot
+                .causeEquipmentId(anomaly.getEquipmentId())
+                .causeEquipmentName(anomaly.getEquipmentName())
+                // 원인 공정 snapshot
+                .causeProcessId(
+                        processId(
+                                anomaly.getRecipeParameter()))
+                .causeProcessName(
+                        processName(
+                                anomaly.getRecipeParameter()))
+                .build();
     }
 
     /**
@@ -83,7 +83,7 @@ public class DefectGenerator {
      * anomaly 발생 후 1 ~ 30분 랜덤
      */
     private Instant randomDetectedTime(
-        Instant occurredTime) {
+            Instant occurredTime) {
 
         int minute = random.nextInt(30) + 1;
 
@@ -93,37 +93,41 @@ public class DefectGenerator {
     /**
      * 진행 중인 lot 중 랜덤 선택
      */
-    private Lot getRandomLot() {
+    private Lot getRandomLot(Long equipmentId) {
 
-        List<Lot> lots = lotService.getAllLots();
+        List<Lot> lots = lotService.getLotsByEquipmentId(equipmentId);
 
         if (lots.isEmpty()) {
             return null;
         }
 
         return lots.get(
-            random.nextInt(lots.size()));
+                random.nextInt(lots.size()));
     }
 
     /**
      * 공정명 변환
      */
     private String processName(
-        String parameter) {
+            String parameter) {
 
         return switch (parameter) {
 
             case "Spin Speed",
-                 "Soft Bake Temperature" -> "DEPOSITION";
+                    "Soft Bake Temperature" ->
+                "DEPOSITION";
 
             case "Exposure Dose",
-                 "PEB" -> "PHOTO";
+                    "PEB" ->
+                "PHOTO";
 
             case "Chamber Pressure",
-                 "Chuck Temperature" -> "ETCH";
+                    "Chuck Temperature" ->
+                "ETCH";
 
             case "Chemical Temperature",
-                 "Chemical Concentration" -> "CLEANING";
+                    "Chemical Concentration" ->
+                "CLEANING";
 
             default -> "UNKNOWN";
         };
@@ -135,32 +139,36 @@ public class DefectGenerator {
      * 테스트용 고정값
      */
     private Long processId(
-        String parameter) {
+            String parameter) {
 
         return switch (parameter) {
 
             case "Spin Speed",
-                 "Soft Bake Temperature" -> 1L;
+                    "Soft Bake Temperature" ->
+                1L;
 
             case "Exposure Dose",
-                 "PEB" -> 2L;
+                    "PEB" ->
+                2L;
 
             case "Chamber Pressure",
-                 "Chuck Temperature" -> 3L;
+                    "Chuck Temperature" ->
+                3L;
 
             case "Chemical Temperature",
-                 "Chemical Concentration" -> 4L;
+                    "Chemical Concentration" ->
+                4L;
 
             default -> 0L;
         };
     }
 
     private DefectCandidate selectCandidate(
-        List<DefectCandidate> candidates) {
+            List<DefectCandidate> candidates) {
 
         int totalWeight = candidates.stream()
-            .mapToInt(DefectCandidate::getWeight)
-            .sum();
+                .mapToInt(DefectCandidate::getWeight)
+                .sum();
 
         int randomValue = random.nextInt(totalWeight);
 

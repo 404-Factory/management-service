@@ -6,4 +6,6 @@ import java.util.List;
 public interface LotService {
 
     List<Lot> getAllLots();
+
+    List<Lot> getLotsByEquipmentId(Long equipmentId);
 }

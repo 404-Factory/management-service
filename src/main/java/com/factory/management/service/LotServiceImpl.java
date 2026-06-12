@@ -18,4 +18,10 @@ public class LotServiceImpl implements LotService {
     public List<Lot> getAllLots() {
         return lotRepository.findAll();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Lot> getLotsByEquipmentId(Long equipmentId) {
+        return lotRepository.findByEquipmentId(equipmentId);
+    }
 }
