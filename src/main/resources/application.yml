@@ -30,7 +30,7 @@ spring:
 sigma:
   event:
     consumer:
-      topics: "management-event"
+      topics: "anomaly.AnomalyCreated"
       groupId: "management-consumer-group"
 
 logging.level.org.springframework.boot.context.properties: DEBUG

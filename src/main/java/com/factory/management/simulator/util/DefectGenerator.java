@@ -1,6 +1,6 @@
 package com.factory.management.simulator.util;
 
-import com.factory.management.event.consume.payload.AnomalyCreatedPayload;
+import com.factory.management.event.payload.consumer.AnomalyCreatedPayload;
 import com.factory.management.infrastructure.entity.Defect;
 import com.factory.management.infrastructure.entity.Lot;
 import com.factory.management.service.LotService;

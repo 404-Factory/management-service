@@ -1,9 +1,9 @@
-package com.factory.management.event.consume.handler;
+package com.factory.management.infrastructure.kafka.handler;
 
 import com.factory.common.event.domain.Event;
 import com.factory.common.inbox.jpa.aop.InboxProcessed;
 import com.factory.common.kafka.support.EventHandler;
-import com.factory.management.event.consume.payload.AnomalyCreatedPayload;
+import com.factory.management.event.payload.consumer.AnomalyCreatedPayload;
 import com.factory.management.event.type.AnomalyEventType;
 import com.factory.management.service.DefectService;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.factory.management.simulator.util;
 
-import com.factory.management.event.consume.payload.AnomalyCreatedPayload;
+import com.factory.management.event.payload.consumer.AnomalyCreatedPayload;
 import java.util.Random;
 
 import org.springframework.stereotype.Service;
