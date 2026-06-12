@@ -7,7 +7,7 @@ spring:
       minimum-idle: ${DB_MIN_IDLE:2}
     url: jdbc:mariadb://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:notification_db}?sslMode=trust
     username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:12345678}
+    password: ${DB_PASSWORD:1234}
 
   jpa:
     hibernate:
