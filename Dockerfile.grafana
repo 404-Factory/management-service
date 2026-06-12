@@ -3,6 +3,16 @@
 # Grafana 컨테이너 실행
 # docker run -d -p 3000:3000 -v "/${PWD}/grafana-backup:/var/lib/grafana" --name grafana my-grafana-athena
 
+# Grafana Renderer 컨테이너 실행
+# docker run -d -p 8081:8081 --name grafana-renderer grafana/grafana-image-renderer:latest
+
+# Docker 네트워크 생성
+# docker network create grafana-network
+
+# Grafana 컨테이너와 Renderer 컨테이너를 같은 네트워크에 연결
+# docker network connect grafana-network grafana
+# docker network connect grafana-network grafana-renderer
+
 FROM grafana/grafana:latest
 
 ENV GF_INSTALL_PLUGINS=grafana-athena-datasource
@@ -11,4 +21,6 @@ ENV GF_SECURITY_ALLOW_EMBEDDING=true \
     GF_AUTH_ANONYMOUS_ENABLED=true \
     GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer \
     GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=grafana-athena-datasource \
-    GF_DEFAULT_APP_MODE=development
+    GF_DEFAULT_APP_MODE=development \
+    GF_RENDERING_SERVER_URL=http://grafana-renderer:8081/render \
+    GF_RENDERING_CALLBACK_URL=http://grafana:3000/
