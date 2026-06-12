@@ -7,10 +7,10 @@ version = '1.0.0'
 
 dependencies {
     // common modules
-	implementation 'com.factory.common:contract:1.0.6'
-	implementation 'com.factory.common:kafka:1.0.6'
-	implementation 'com.factory.common:inbox-jpa:1.0.6'
-	implementation 'com.factory.common:outbox-jpa:1.0.6'
+	implementation 'com.factory.common:contract:1.0.7'
+	implementation 'com.factory.common:kafka:1.0.7'
+	implementation 'com.factory.common:inbox-jpa:1.0.7'
+	implementation 'com.factory.common:outbox-jpa:1.0.7'
 
 	// platform BOM
 	implementation platform('com.factory:platform:1.0.5')
@@ -50,7 +50,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     // MariaDB 
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.1.4'
 
 	// Kafka
 	implementation 'org.springframework.kafka:spring-kafka'
