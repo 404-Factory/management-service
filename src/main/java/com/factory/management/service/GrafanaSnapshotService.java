@@ -95,6 +95,9 @@ public class GrafanaSnapshotService {
             throw new RuntimeException("그라파나 스냅샷 생성에 실패했습니다.");
         }
 
+        System.out.println("DEBUG: snapshotResponse=" + snapshotResponse);
+        System.out.println("DEBUG: snapshotResponse.url()=" + snapshotResponse.url());
+
         // 4. 스냅샷 정보 저장
         Snapshot snapshot = Snapshot.builder()
                 .anomalyId(anomalyId)
