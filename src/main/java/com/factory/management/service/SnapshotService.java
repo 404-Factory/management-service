@@ -13,12 +13,12 @@ public class SnapshotService {
 
     private final SnapshotRepository snapshotRepository;
 
+    private static final String DEFAULT_SNAPSHOT_URL = "http://localhost:3000/d/adpp6l5";
+
     public String getSnapshotUrl(Long anomalyId) {
-
-        Snapshot snapshot = snapshotRepository
+        return snapshotRepository
                 .findByAnomalyId(anomalyId)
-                .orElseThrow(() -> new RuntimeException("snapshot 없음"));
-
-        return snapshot.getUrl();
+                .map(Snapshot::getUrl) // 데이터가 있으면 스냅샷의 URL을 추출
+                .orElseGet(() -> DEFAULT_SNAPSHOT_URL); // 없으면 기본 링크 반환
     }
 }
