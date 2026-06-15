@@ -1,6 +1,6 @@
 package com.factory.management.service;
 
-import com.factory.management.event.consume.payload.AnomalyCreatedPayload;
+import com.factory.management.event.payload.consumer.AnomalyCreatedPayload;
 import java.time.LocalDate;
 
 public interface DefectService {
