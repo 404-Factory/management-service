@@ -7,13 +7,20 @@ import org.springframework.web.client.RestClient;
 import com.factory.management.dto.request.SnapshotRequest;
 import com.factory.management.dto.response.DashboardResponse;
 import com.factory.management.dto.response.SnapshotResponse;
+import com.factory.management.infrastructure.entity.Snapshot;
+import com.factory.management.infrastructure.repository.SnapshotRepository;
+
+import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class GrafanaSnapshotService {
 
-    private final RestClient restClient;
+    private final RestClient restClient = RestClient.builder().build();
+
+    private final SnapshotRepository snapshotRepository;
 
     @Value("${grafana.url}")
     private String grafanaUrl;
@@ -21,11 +28,7 @@ public class GrafanaSnapshotService {
     @Value("${grafana.token}")
     private String grafanaToken;
 
-    public GrafanaSnapshotService() {
-        this.restClient = RestClient.builder().build();
-    }
-
-    public String createSnapshot(String dashboardUid, String from, String to) {
+    public String createSnapshot(Long anomalyId, String dashboardUid, String from, String to) {
 
         // 1. 원본 대시보드 JSON 템플릿(패널 구조) 가져오기
         DashboardResponse originalDashboard = restClient.get()
@@ -64,6 +67,14 @@ public class GrafanaSnapshotService {
         if (snapshotResponse == null) {
             throw new RuntimeException("그라파나 스냅샷 생성에 실패했습니다.");
         }
+
+        // 4. 스냅샷 정보 저장
+        Snapshot snapshot = Snapshot.builder()
+                .anomalyId(anomalyId)
+                .url(snapshotResponse.url())
+                .build();
+
+        snapshotRepository.save(snapshot);
 
         return snapshotResponse.url();
     }

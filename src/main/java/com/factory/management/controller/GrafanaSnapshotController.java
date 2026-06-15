@@ -1,40 +1,25 @@
 package com.factory.management.controller;
 
-import java.time.LocalDate;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.factory.management.dto.response.SnapshotResponse;
-import com.factory.management.service.GrafanaSnapshotService;
+import com.factory.management.service.SnapshotService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/logs")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/snapshots")
 public class GrafanaSnapshotController {
 
-    private final GrafanaSnapshotService grafanaSnapshotService;
+    private final SnapshotService snapshotService;
 
-    @GetMapping("/snapshot")
-    public ResponseEntity<SnapshotResponse> getLogSnapshot(@RequestParam("uid") String dashboardUid,
-            @RequestParam("from") String from,
-            @RequestParam("to") String to) {
-
-        String externalSnapshotUrl = grafanaSnapshotService.createSnapshot(dashboardUid, from, to);
-
-        SnapshotResponse response = SnapshotResponse.builder()
-                .url(externalSnapshotUrl)
-                .key(dashboardUid)
-                .deleteUrl("")
-                .build();
-
-        return ResponseEntity.ok(response);
+    @GetMapping("/{anomalyId}")
+    public String getSnapshot(
+            @PathVariable Long anomalyId) {
+        return snapshotService
+                .getSnapshotUrl(anomalyId);
     }
 }
