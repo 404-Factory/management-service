@@ -32,7 +32,7 @@ spring:
 sigma:
   event:
     consumer:
-      topics: "anomaly.AnomalyCreated"
+      topics: "Anomaly.event"
       groupId: "management-consumer-group"
       subscription:
         - "AnomalyCreated"
