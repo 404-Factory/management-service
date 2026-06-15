@@ -23,9 +23,11 @@ public class GrafanaSnapshotController {
     private final GrafanaSnapshotService grafanaSnapshotService;
 
     @GetMapping("/snapshot")
-    public ResponseEntity<SnapshotResponse> getLogSnapshot(@RequestParam("uid") String dashboardUid) {
+    public ResponseEntity<SnapshotResponse> getLogSnapshot(@RequestParam("uid") String dashboardUid,
+            @RequestParam("from") String from,
+            @RequestParam("to") String to) {
 
-        String externalSnapshotUrl = grafanaSnapshotService.createSnapshot(dashboardUid);
+        String externalSnapshotUrl = grafanaSnapshotService.createSnapshot(dashboardUid, from, to);
 
         SnapshotResponse response = SnapshotResponse.builder()
                 .url(externalSnapshotUrl)

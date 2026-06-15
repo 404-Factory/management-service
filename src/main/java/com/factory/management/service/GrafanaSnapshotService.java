@@ -25,7 +25,7 @@ public class GrafanaSnapshotService {
         this.restClient = RestClient.builder().build();
     }
 
-    public String createSnapshot(String dashboardUid) {
+    public String createSnapshot(String dashboardUid, String from, String to) {
 
         // 1. 원본 대시보드 JSON 템플릿(패널 구조) 가져오기
         DashboardResponse originalDashboard = restClient.get()
@@ -42,8 +42,8 @@ public class GrafanaSnapshotService {
         Map<String, Object> dashboardMap = originalDashboard.dashboard();
 
         Map<String, String> forcedTimeRange = Map.of(
-                "from", "now-30m",
-                "to", "now+30m");
+                "from", from,
+                "to", to);
         dashboardMap.put("time", forcedTimeRange);
 
         // 2. 스냅샷 생성 요청 바디 구성 (expires: 0 = 영구 보존)
