@@ -38,3 +38,7 @@ sigma:
         - "AnomalyCreated"
 
 logging.level.org.springframework.boot.context.properties: DEBUG
+
+grafana:
+  url: ${GRAFANA_URL:http://localhost:3000}
+  token: ${GRAFANA_TOKEN:}

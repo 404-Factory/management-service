@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class AnomalyCreatedPayload implements EventPayload {
 
-    private Long anomalyLogId;
+    private Long anomalyId;
     private Long equipmentId;
     private String equipmentName;
     private String recipeParameter;
