@@ -16,11 +16,12 @@
 FROM grafana/grafana:latest
 
 ENV GF_INSTALL_PLUGINS=grafana-athena-datasource
+ENV GF_INSTALL_PLUGINS=grafana-elasticsearch-datasource
 
 ENV GF_SECURITY_ALLOW_EMBEDDING=true \
     GF_AUTH_ANONYMOUS_ENABLED=true \
     GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer \
-    GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=grafana-athena-datasource \
+    GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=grafana-athena-datasource,grafana-elasticsearch-datasource \
     GF_DEFAULT_APP_MODE=development \
     GF_RENDERING_SERVER_URL=http://grafana-renderer:8081/render \
     GF_RENDERING_CALLBACK_URL=http://grafana:3000/
