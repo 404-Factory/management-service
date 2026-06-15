@@ -28,7 +28,7 @@ public class GrafanaSnapshotService {
     @Value("${grafana.token}")
     private String grafanaToken;
 
-    public String createSnapshot(Long anomalyId, String dashboardUid, String from, String to) {
+    public String createSnapshot(Long anomalyId, String dashboardUid, String from, String to, String equipmentName) {
 
         // 1. 원본 대시보드 JSON 템플릿(패널 구조) 가져오기
         DashboardResponse originalDashboard = restClient.get()
@@ -43,6 +43,32 @@ public class GrafanaSnapshotService {
 
         // 가져온 대시보드 객체 추출
         Map<String, Object> dashboardMap = originalDashboard.dashboard();
+
+        // 대시보드 변수(templating) 중에서 "equipment" 변수의 현재 선택값과 쿼리값을 요청받은 장비명으로 변경
+        if (dashboardMap.containsKey("templating")) {
+            Map<String, Object> templating = (Map<String, Object>) dashboardMap.get("templating");
+            if (templating != null && templating.containsKey("list")) {
+                java.util.List<Map<String, Object>> variableList = (java.util.List<Map<String, Object>>) templating
+                        .get("list");
+
+                if (variableList != null) {
+                    for (Map<String, Object> variable : variableList) {
+                        // 대시보드에 설정된 변수명이 "equipment"인 것을 탐색
+                        if ("equipment".equals(variable.get("name"))) {
+                            // 현재 선택 값(current)과 기본 값(query)을 모두 요청받은 장비명으로 변경
+                            variable.put("query", equipmentName);
+
+                            Map<String, Object> current = new java.util.HashMap<>();
+                            current.put("selected", true);
+                            current.put("text", equipmentName);
+                            current.put("value", equipmentName);
+                            variable.put("current", current);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
         Map<String, String> forcedTimeRange = Map.of(
                 "from", from,

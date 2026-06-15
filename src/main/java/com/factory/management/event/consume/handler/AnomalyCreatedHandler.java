@@ -43,6 +43,7 @@ public class AnomalyCreatedHandler implements EventHandler<AnomalyCreatedPayload
         String toStr = toInstant.toString();
 
         defectService.createWithProbability(event.getPayload());
-        grafanaSnapshotService.createSnapshot(event.getPayload().getAnomalyId(), dashboardUid, fromStr, toStr);
+        grafanaSnapshotService.createSnapshot(event.getPayload().getAnomalyId(), dashboardUid, fromStr, toStr,
+                event.getPayload().getEquipmentName());
     }
 }
