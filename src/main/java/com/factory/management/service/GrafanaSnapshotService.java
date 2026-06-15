@@ -12,6 +12,7 @@ import com.factory.management.infrastructure.repository.SnapshotRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -48,7 +49,7 @@ public class GrafanaSnapshotService {
         if (dashboardMap.containsKey("templating")) {
             Map<String, Object> templating = (Map<String, Object>) dashboardMap.get("templating");
             if (templating != null && templating.containsKey("list")) {
-                java.util.List<Map<String, Object>> variableList = (java.util.List<Map<String, Object>>) templating
+                List<Map<String, Object>> variableList = (List<Map<String, Object>>) templating
                         .get("list");
 
                 if (variableList != null) {
