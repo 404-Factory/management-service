@@ -13,7 +13,7 @@ public class SnapshotService {
 
     private final SnapshotRepository snapshotRepository;
 
-    private static final String DEFAULT_SNAPSHOT_URL = "http://localhost:3000/d/adpp6l5";
+    private static final String DEFAULT_SNAPSHOT_URL = "http://localhost:3000/d-solo/adpp6l5/anomalydetail";
 
     public String getSnapshotUrl(Long anomalyId) {
         return snapshotRepository
