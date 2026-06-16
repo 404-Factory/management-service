@@ -1,7 +1,5 @@
 # docker build -f Dockerfile.grafana -t my-grafana-athena .
-
-# Grafana 컨테이너 실행
-# docker run -d -p 3000:3000 -v "/${PWD}/grafana-backup:/var/lib/grafana" --name grafana my-grafana-athena
+# docker run -d -p 3000:3000 --env-file .env --name grafana my-grafana-athena
 
 FROM grafana/grafana:latest
 
@@ -12,3 +10,13 @@ ENV GF_SECURITY_ALLOW_EMBEDDING=true \
     GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer \
     GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=grafana-athena-datasource \
     GF_DEFAULT_APP_MODE=development
+
+COPY provisioning/ /etc/grafana/provisioning/
+COPY grafana-dashboards/ /var/lib/grafana/dashboards/
+
+USER root
+RUN apk add --no-cache gettext
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
