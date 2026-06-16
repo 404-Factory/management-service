@@ -1,0 +1,63 @@
+apiVersion: 1
+datasources:
+  - name: Athena
+    uid: P412B726DC9DC6F02
+    type: grafana-athena-datasource
+    access: proxy
+    isDefault: false
+    jsonData:
+      authType: keys
+      catalog: AwsDataCatalog
+      database: raw_sensor_data
+      defaultRegion: ap-northeast-2
+      outputLocation: s3://sigma-310095858382-ap-northeast-2-an/
+      workgroup: primary
+    secureJsonData:
+      accessKey: ${AWS_ACCESS_KEY_ID} 
+      secretKey: ${AWS_SECRET_ACCESS_KEY} 
+
+  - name: elasticsearch-1
+    uid: bfnax3mssoikgf
+    type: elasticsearch
+    access: proxy
+    url: ${OPENSEARCH_URL}
+    basicAuth: true
+    basicAuthUser: ${OPENSEARCH_USERNAME}
+    isDefault: true
+    jsonData:
+      index: sensor-*
+      maxConcurrentShardRequests: 5
+      timeField: measuredAt
+      tlsSkipVerify: true
+    secureJsonData:
+      basicAuthPassword: ${OPENSEARCH_PASSWORD}
+
+  - name: MySQL
+    uid: P211906C1C32DB77E
+    type: mysql
+    access: proxy
+    url: ${DB_HOST}:${DB_PORT}
+    user: ${DB_USERNAME}
+    database: factory_db
+    isDefault: false
+    jsonData:
+      tlsSkipVerify: true
+    secureJsonData:
+      password: ${DB_PASSWORD}
+
+  - name: mysql-1
+    uid: cfoo8fc113e9sc
+    type: mysql
+    access: proxy
+    url: ${DB_HOST}:${DB_PORT}
+    user: ${DB_USERNAME}
+    database: management_db
+    isDefault: false
+    jsonData:
+      connMaxLifetime: 14400
+      maxIdleConns: 100
+      maxIdleConnsAuto: true
+      maxOpenConns: 100
+      tlsSkipVerify: true
+    secureJsonData:
+      password: ${DB_PASSWORD}
