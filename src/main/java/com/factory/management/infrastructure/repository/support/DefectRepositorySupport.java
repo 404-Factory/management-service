@@ -1,7 +1,7 @@
 package com.factory.management.infrastructure.repository.support;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public interface DefectRepositorySupport {
-    long getDefectCount(String equipmentName, LocalDate startDate, LocalDate endDate);
+    long getDefectCount(String equipmentName, LocalDateTime since);
 }

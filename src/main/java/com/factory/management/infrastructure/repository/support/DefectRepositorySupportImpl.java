@@ -3,7 +3,7 @@ package com.factory.management.infrastructure.repository.support;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.Instant;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -17,15 +17,14 @@ public class DefectRepositorySupportImpl implements DefectRepositorySupport {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public long getDefectCount(String equipmentName, LocalDate startDate, LocalDate endDate) {
+    public long getDefectCount(String equipmentName, LocalDateTime since) {
 
         Long result = queryFactory
             .select(defect.count())
             .from(defect)
             .where(
                 equipmentNameEq(equipmentName),
-                occurredTimeGoe(startDate),
-                occurredTimeLt(endDate)
+                occurredTimeGoe(since)
             )
             .fetchOne();
 
@@ -36,28 +35,13 @@ public class DefectRepositorySupportImpl implements DefectRepositorySupport {
         return equipmentName != null ? defect.causeEquipmentName.eq(equipmentName) : null;
     }
 
-    private BooleanExpression occurredTimeGoe(LocalDate startDate) {
-        if (startDate == null) {
+    private BooleanExpression occurredTimeGoe(LocalDateTime since) {
+        if (since == null) {
             return null;
         }
 
-        Instant start = startDate
-            .atStartOfDay(ZoneOffset.UTC)
-            .toInstant();
+        Instant start = since.toInstant(ZoneOffset.UTC);
 
         return defect.occurredTime.goe(start);
-    }
-
-    private BooleanExpression occurredTimeLt(LocalDate endDate) {
-        if (endDate == null) {
-            return null;
-        }
-
-        Instant end = endDate
-            .plusDays(1)
-            .atStartOfDay(ZoneOffset.UTC)
-            .toInstant();
-
-        return defect.occurredTime.lt(end);
     }
 }

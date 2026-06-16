@@ -13,7 +13,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -102,7 +102,7 @@ class DefectServiceIntegrationTest {
         defectService.createWithProbability(payload);
 
         long count = defectRepository.getDefectCount("EQ-01",
-            LocalDate.of(2026, 6, 12), LocalDate.of(2026, 6, 12));
+            LocalDateTime.of(2026, 6, 12, 0, 0));
         assertThat(count).isEqualTo(2);
     }
 }
