@@ -32,10 +32,13 @@ spring:
 sigma:
   event:
     consumer:
-      topics: "Anomaly.event"
+      topics: 
+        - "Anomaly.event"
+        - "sensor-violations"
       groupId: "management-consumer-group"
       subscription:
         - "AnomalyCreated"
+        - "SensorViolation"
 
 logging.level.org.springframework.boot.context.properties: DEBUG
 
