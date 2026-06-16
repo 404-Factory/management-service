@@ -34,6 +34,15 @@ public class DefectGenerator {
      */
     public Defect generate(SensorViolationPayload violation) {
 
+        if (violation.getEquipmentId() == null ||
+                violation.getDetectedAt() == null ||
+                violation.getRuleName() == null ||
+                violation.getSensorType() == null ||
+                violation.getSeverity() == null) {
+
+            return null;
+        }
+
         if (!defectProbabilityUtils.shouldGenerate(violation)) {
             return null;
         }

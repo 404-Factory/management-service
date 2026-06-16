@@ -3,7 +3,7 @@ package com.factory.management.event.type;
 import com.factory.common.event.domain.EventType;
 
 public enum SensorViolationEventType implements EventType {
-    SENSOR_VIOLATION("sensor-violations");
+    SENSOR_VIOLATION("SensorViolation");
 
     private final String name;
 
