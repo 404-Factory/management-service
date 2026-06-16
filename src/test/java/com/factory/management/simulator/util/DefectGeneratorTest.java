@@ -1,8 +1,10 @@
 package com.factory.management.simulator.util;
 
-import com.factory.management.event.payload.consumer.AnomalyCreatedPayload;
+import com.factory.management.event.payload.consumer.SensorViolationPayload;
 import com.factory.management.infrastructure.entity.Defect;
+import com.factory.management.infrastructure.entity.Equipment;
 import com.factory.management.infrastructure.entity.Lot;
+import com.factory.management.infrastructure.repository.EquipmentRepository;
 import com.factory.management.service.LotService;
 import com.factory.management.simulator.registry.RuleRegistry;
 import com.factory.management.simulator.rule.DefectCandidate;
@@ -16,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,26 +35,28 @@ class DefectGeneratorTest {
     private RuleRegistry ruleRegistry;
 
     @Mock
+    private EquipmentRepository equipmentRepository;
+
+    @Mock
     private DefectProbabilityUtils defectProbabilityUtils;
 
     @InjectMocks
     private DefectGenerator defectGenerator;
 
-    private AnomalyCreatedPayload buildPayload() {
-        AnomalyCreatedPayload payload = new AnomalyCreatedPayload();
+    private SensorViolationPayload buildPayload() {
+        SensorViolationPayload payload = new SensorViolationPayload();
         payload.setEquipmentId(1L);
-        payload.setEquipmentName("EQ-01");
-        payload.setRecipeParameter("Spin Speed");
+        payload.setSensorType("Spin Speed");
+        payload.setRuleName("NELSON_RULE_1");
         payload.setSeverity("CRITICAL");
-        payload.setCauseRule("NELSON_RULE_1");
-        payload.setOccurredTime(Instant.parse("2026-06-12T00:00:00Z"));
+        payload.setDetectedAt(Instant.parse("2026-06-12T00:00:00Z"));
         return payload;
     }
 
     @Test
     @DisplayName("확률 조건 미충족 시 null을 반환한다")
     void generate_probabilityFalse_returnsNull() {
-        AnomalyCreatedPayload payload = buildPayload();
+        SensorViolationPayload payload = buildPayload();
         when(defectProbabilityUtils.shouldGenerate(payload)).thenReturn(false);
 
         assertThat(defectGenerator.generate(payload)).isNull();
@@ -60,7 +65,7 @@ class DefectGeneratorTest {
     @Test
     @DisplayName("매칭되는 rule candidate가 없으면 null을 반환한다")
     void generate_noCandidates_returnsNull() {
-        AnomalyCreatedPayload payload = buildPayload();
+        SensorViolationPayload payload = buildPayload();
         when(defectProbabilityUtils.shouldGenerate(payload)).thenReturn(true);
         when(ruleRegistry.getCandidates(any(), any())).thenReturn(List.of());
 
@@ -70,7 +75,7 @@ class DefectGeneratorTest {
     @Test
     @DisplayName("진행 중인 lot이 없으면 null을 반환한다")
     void generate_noLots_returnsNull() {
-        AnomalyCreatedPayload payload = buildPayload();
+        SensorViolationPayload payload = buildPayload();
         when(defectProbabilityUtils.shouldGenerate(payload)).thenReturn(true);
         when(ruleRegistry.getCandidates("Spin Speed", RuleName.NELSON_RULE_1))
             .thenReturn(List.of(new DefectCandidate("PR", "PR_THICKNESS", 100)));
@@ -80,15 +85,19 @@ class DefectGeneratorTest {
     }
 
     @Test
-    @DisplayName("유효한 anomaly payload로 Defect를 생성한다")
+    @DisplayName("유효한 sensor violation으로 Defect를 생성한다")
     void generate_validInput_returnsDefect() {
-        AnomalyCreatedPayload payload = buildPayload();
+        SensorViolationPayload payload = buildPayload();
         when(defectProbabilityUtils.shouldGenerate(payload)).thenReturn(true);
         when(ruleRegistry.getCandidates("Spin Speed", RuleName.NELSON_RULE_1))
             .thenReturn(List.of(new DefectCandidate("PR", "PR_THICKNESS", 100)));
 
         Lot lot = mock(Lot.class);
         when(lotService.getLotsByEquipmentId(1L)).thenReturn(List.of(lot));
+
+        Equipment equipment = mock(Equipment.class);
+        when(equipment.getName()).thenReturn("EQ-01");
+        when(equipmentRepository.findById(1L)).thenReturn(Optional.of(equipment));
 
         Defect result = defectGenerator.generate(payload);
 

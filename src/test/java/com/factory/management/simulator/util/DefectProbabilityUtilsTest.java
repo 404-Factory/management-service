@@ -1,6 +1,6 @@
 package com.factory.management.simulator.util;
 
-import com.factory.management.event.payload.consumer.AnomalyCreatedPayload;
+import com.factory.management.event.payload.consumer.SensorViolationPayload;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ class DefectProbabilityUtilsTest {
     @Test
     @DisplayName("severity가 null이면 DEFAULT_RATE(10%)가 적용된다")
     void nullSeverity_usesDefaultRate() {
-        AnomalyCreatedPayload payload = new AnomalyCreatedPayload();
+        SensorViolationPayload payload = new SensorViolationPayload();
 
         when(mockRandom.nextInt(100)).thenReturn(9);
         assertThat(defectProbabilityUtils.shouldGenerate(payload)).isTrue();
@@ -51,35 +51,35 @@ class DefectProbabilityUtilsTest {
     }
 
     @Test
-    @DisplayName("CAUTION severity이면 CAUTION_RATE(15%)가 적용된다")
+    @DisplayName("CAUTION severity이면 CAUTION_RATE(5%)가 적용된다")
     void cautionSeverity_usesCautionRate() {
-        AnomalyCreatedPayload payload = new AnomalyCreatedPayload();
+        SensorViolationPayload payload = new SensorViolationPayload();
         payload.setSeverity("CAUTION");
 
-        when(mockRandom.nextInt(100)).thenReturn(14);
+        when(mockRandom.nextInt(100)).thenReturn(4);
         assertThat(defectProbabilityUtils.shouldGenerate(payload)).isTrue();
 
-        when(mockRandom.nextInt(100)).thenReturn(15);
+        when(mockRandom.nextInt(100)).thenReturn(5);
         assertThat(defectProbabilityUtils.shouldGenerate(payload)).isFalse();
     }
 
     @Test
-    @DisplayName("CRITICAL severity이면 CRITICAL_RATE(50%)가 적용된다")
+    @DisplayName("CRITICAL severity이면 CRITICAL_RATE(10%)가 적용된다")
     void criticalSeverity_usesCriticalRate() {
-        AnomalyCreatedPayload payload = new AnomalyCreatedPayload();
+        SensorViolationPayload payload = new SensorViolationPayload();
         payload.setSeverity("CRITICAL");
 
-        when(mockRandom.nextInt(100)).thenReturn(49);
+        when(mockRandom.nextInt(100)).thenReturn(9);
         assertThat(defectProbabilityUtils.shouldGenerate(payload)).isTrue();
 
-        when(mockRandom.nextInt(100)).thenReturn(50);
+        when(mockRandom.nextInt(100)).thenReturn(10);
         assertThat(defectProbabilityUtils.shouldGenerate(payload)).isFalse();
     }
 
     @Test
     @DisplayName("알 수 없는 severity이면 DEFAULT_RATE(10%)가 적용된다")
     void unknownSeverity_usesDefaultRate() {
-        AnomalyCreatedPayload payload = new AnomalyCreatedPayload();
+        SensorViolationPayload payload = new SensorViolationPayload();
         payload.setSeverity("WARNING");
 
         when(mockRandom.nextInt(100)).thenReturn(9);

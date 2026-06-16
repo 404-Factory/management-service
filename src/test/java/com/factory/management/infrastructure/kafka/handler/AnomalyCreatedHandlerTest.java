@@ -2,7 +2,6 @@ package com.factory.management.infrastructure.kafka.handler;
 
 import com.factory.common.event.domain.Event;
 import com.factory.management.event.payload.consumer.AnomalyCreatedPayload;
-import com.factory.management.service.DefectService;
 import com.factory.management.service.GrafanaSnapshotService;
 import java.time.Instant;
 import org.junit.jupiter.api.DisplayName;
@@ -21,9 +20,6 @@ import static org.mockito.Mockito.when;
 class AnomalyCreatedHandlerTest {
 
     @Mock
-    private DefectService defectService;
-
-    @Mock
     private GrafanaSnapshotService grafanaSnapshotService;
 
     @InjectMocks
@@ -36,20 +32,25 @@ class AnomalyCreatedHandlerTest {
     }
 
     @Test
-    @DisplayName("process() 호출 시 payload를 defectService에 전달한다")
+    @DisplayName("process() 호출 시 firstDetectedAt~lastDetectedAt 구간으로 grafana 스냅샷을 생성한다")
     @SuppressWarnings("unchecked")
-    void process_delegatesToDefectService() {
+    void process_createsGrafanaSnapshot() {
+        Instant from = Instant.parse("2026-06-11T04:00:00Z");
+        Instant to = Instant.parse("2026-06-11T04:30:00Z");
+
         AnomalyCreatedPayload payload = new AnomalyCreatedPayload();
+        payload.setAnomalyId(10L);
         payload.setEquipmentId(1L);
+        payload.setEquipmentName("EQ-01");
         payload.setSeverity("CRITICAL");
-        payload.setFirstDetectedAt(Instant.parse("2026-06-11T04:00:00Z"));
-        payload.setLastDetectedAt(Instant.parse("2026-06-11T04:30:00Z"));
+        payload.setFirstDetectedAt(from);
+        payload.setLastDetectedAt(to);
 
         Event<AnomalyCreatedPayload> event = mock(Event.class);
         when(event.getPayload()).thenReturn(payload);
 
         handler.process(event);
 
-        verify(defectService).createWithProbability(payload);
+        verify(grafanaSnapshotService).createSnapshot(10L, "adpp6l5", from.toString(), to.toString(), "EQ-01");
     }
 }

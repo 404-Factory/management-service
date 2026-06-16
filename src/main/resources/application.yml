@@ -37,6 +37,12 @@ sigma:
       subscription:
         - "AnomalyCreated"
 
+app:
+  kafka:
+    consumer:
+      violation-topic: ${KAFKA_VIOLATIONS_TOPIC:sensor-violations}
+      violation-group-id: ${KAFKA_VIOLATIONS_GROUP_ID:management-violation-group}
+
 logging.level.org.springframework.boot.context.properties: DEBUG
 
 grafana:
