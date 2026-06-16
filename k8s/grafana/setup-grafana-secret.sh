@@ -36,7 +36,15 @@ kubectl create secret generic grafana-admin -n "${NAMESPACE}" \
 # 2) Grafana 배포 + 기동 대기
 log "[2/5] grafana.yml 적용 및 기동 대기"
 kubectl apply -f "${SCRIPT_DIR}/grafana.yml"
-kubectl rollout status "deployment/${GRAFANA_SVC}" -n "${NAMESPACE}" --timeout=180s
+if ! kubectl rollout status "deployment/${GRAFANA_SVC}" -n "${NAMESPACE}" --timeout=180s; then
+  echo "---- ERROR: grafana rollout 실패. 진단 정보 ----"
+  echo "[pods]";  kubectl get pods -n "${NAMESPACE}" -l app=grafana -o wide || true
+  echo "[pvc]";   kubectl get pvc -n "${NAMESPACE}" || true
+  echo "[describe pod]"; kubectl describe pod -n "${NAMESPACE}" -l app=grafana || true
+  echo "[events]"; kubectl get events -n "${NAMESPACE}" --sort-by=.lastTimestamp | tail -20 || true
+  echo "[logs]";  kubectl logs -n "${NAMESPACE}" -l app=grafana --tail=50 || true
+  exit 1
+fi
 
 # 3) port-forward (백그라운드, 스크립트 종료 시 정리)
 log "[3/5] port-forward svc/${GRAFANA_SVC} ${LOCAL_PORT}:3000"
