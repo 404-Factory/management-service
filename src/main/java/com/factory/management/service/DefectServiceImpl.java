@@ -1,6 +1,10 @@
 package com.factory.management.service;
 
+<<<<<<< HEAD
+import com.factory.management.event.consume.payload.SensorViolationPayload;
+=======
 import com.factory.management.event.payload.consumer.AnomalyCreatedPayload;
+>>>>>>> origin/main
 import com.factory.management.infrastructure.entity.Defect;
 import com.factory.management.infrastructure.repository.DefectRepository;
 import com.factory.management.simulator.util.DefectGenerator;
@@ -26,7 +30,7 @@ public class DefectServiceImpl implements DefectService {
     }
 
     @Override
-    public void createWithProbability(AnomalyCreatedPayload payload) {
+    public void createWithProbability(SensorViolationPayload payload) {
         Defect defect = defectGenerator.generate(payload);
         if (defect != null) {
             log.info("[DefectCreated] defectType={}, defectCode={}, equipmentName={}",

@@ -1,8 +1,14 @@
 package com.factory.management.simulator.util;
 
+<<<<<<< HEAD
+import com.factory.management.event.consume.payload.SensorViolationPayload;
+=======
 import com.factory.management.event.payload.consumer.AnomalyCreatedPayload;
+>>>>>>> origin/main
 import com.factory.management.infrastructure.entity.Defect;
+import com.factory.management.infrastructure.entity.Equipment;
 import com.factory.management.infrastructure.entity.Lot;
+import com.factory.management.infrastructure.repository.EquipmentRepository;
 import com.factory.management.service.LotService;
 import com.factory.management.simulator.registry.RuleRegistry;
 import com.factory.management.simulator.rule.DefectCandidate;
@@ -22,22 +28,23 @@ public class DefectGenerator {
 
     private final LotService lotService;
     private final RuleRegistry ruleRegistry;
+    private final EquipmentRepository equipmentRepository;
     private final DefectProbabilityUtils defectProbabilityUtils;
 
     private final Random random = new Random();
 
     /**
-     * anomaly 기반 synthetic defect 생성
+     * sensor violation 기반 synthetic defect 생성
      */
-    public Defect generate(AnomalyCreatedPayload anomaly) {
+    public Defect generate(SensorViolationPayload violation) {
 
-        if (!defectProbabilityUtils.shouldGenerate(anomaly)) {
+        if (!defectProbabilityUtils.shouldGenerate(violation)) {
             return null;
         }
         // rule candidate 조회
         List<DefectCandidate> candidates = ruleRegistry.getCandidates(
-                anomaly.getRecipeParameter(),
-                RuleName.valueOf(anomaly.getCauseRule()));
+                violation.getSensorType(),
+                RuleName.valueOf(violation.getRuleName()));
 
         // rule 없으면 생성 안함
         if (candidates.isEmpty()) {
@@ -48,7 +55,7 @@ public class DefectGenerator {
         DefectCandidate selected = selectCandidate(candidates);
 
         // 랜덤 lot 선택
-        Lot lot = getRandomLot(anomaly.getEquipmentId());
+        Lot lot = getRandomLot(violation.getEquipmentId());
 
         if (lot == null) {
             return null;
@@ -59,28 +66,28 @@ public class DefectGenerator {
                 .defectType(selected.getDefectType())
                 .defectCode(selected.getDefectCode())
                 // 실제 발생 시각
-                .occurredTime(anomaly.getOccurredTime())
+                .occurredTime(violation.getDetectedAt())
                 // defect 검출 시각
                 .detectedTime(
                         randomDetectedTime(
-                                anomaly.getOccurredTime()))
+                                violation.getDetectedAt()))
                 // 원인 설비 snapshot
-                .causeEquipmentId(anomaly.getEquipmentId())
-                .causeEquipmentName(anomaly.getEquipmentName())
+                .causeEquipmentId(violation.getEquipmentId())
+                .causeEquipmentName(equipmentName(violation.getEquipmentId()))
                 // 원인 공정 snapshot
                 .causeProcessId(
                         processId(
-                                anomaly.getRecipeParameter()))
+                                violation.getSensorType()))
                 .causeProcessName(
                         processName(
-                                anomaly.getRecipeParameter()))
+                                violation.getSensorType()))
                 .build();
     }
 
     /**
      * defect 검출 시간 생성
      * <p>
-     * anomaly 발생 후 1 ~ 30분 랜덤
+     * sensor violation 발생 후 1 ~ 30분 랜덤
      */
     private Instant randomDetectedTime(
             Instant occurredTime) {
@@ -161,6 +168,12 @@ public class DefectGenerator {
 
             default -> 0L;
         };
+    }
+
+    private String equipmentName(Long equipmentId) {
+        return equipmentRepository.findById(equipmentId)
+                .map(Equipment::getName)
+                .orElse("UNKNOWN");
     }
 
     private DefectCandidate selectCandidate(

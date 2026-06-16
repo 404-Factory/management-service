@@ -1,6 +1,11 @@
 package com.factory.management.simulator.util;
 
+<<<<<<< HEAD
+import com.factory.management.event.consume.payload.SensorViolationPayload;
+
+=======
 import com.factory.management.event.payload.consumer.AnomalyCreatedPayload;
+>>>>>>> origin/main
 import java.util.Random;
 
 import org.springframework.stereotype.Service;
@@ -14,22 +19,22 @@ public class DefectProbabilityUtils {
 
     private final Random random = new Random();
 
-    public boolean shouldGenerate(AnomalyCreatedPayload anomaly) {
+    public boolean shouldGenerate(SensorViolationPayload violation) {
 
-        int generateRate = getGenerateRate(anomaly);
+        int generateRate = getGenerateRate(violation);
 
         int value = random.nextInt(100);
 
         return value < generateRate;
     }
 
-    private int getGenerateRate(AnomalyCreatedPayload anomaly) {
+    private int getGenerateRate(SensorViolationPayload violation) {
 
-        if (anomaly == null || anomaly.getSeverity() == null) {
+        if (violation == null || violation.getSeverity() == null) {
             return DEFAULT_RATE;
         }
 
-        return switch (anomaly.getSeverity()) {
+        return switch (violation.getSeverity()) {
             case "CAUTION" -> CAUTION_RATE;
             case "CRITICAL" -> CRITICAL_RATE;
             default -> DEFAULT_RATE;
