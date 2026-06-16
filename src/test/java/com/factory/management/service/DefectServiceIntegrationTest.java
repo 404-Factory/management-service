@@ -1,6 +1,6 @@
 package com.factory.management.service;
 
-import com.factory.management.event.payload.consumer.AnomalyCreatedPayload;
+import com.factory.management.event.payload.consumer.SensorViolationPayload;
 import com.factory.management.infrastructure.entity.Defect;
 import com.factory.management.infrastructure.repository.DefectRepository;
 import com.factory.management.simulator.util.DefectGenerator;
@@ -48,7 +48,7 @@ class DefectServiceIntegrationTest {
             .detectedTime(occurredTime.plusSeconds(600))
             .build();
 
-        AnomalyCreatedPayload payload = new AnomalyCreatedPayload();
+        SensorViolationPayload payload = new SensorViolationPayload();
         when(defectGenerator.generate(payload)).thenReturn(defect);
 
         defectService.createWithProbability(payload);
@@ -64,7 +64,7 @@ class DefectServiceIntegrationTest {
     @Test
     @DisplayName("generator가 null을 반환하면 DB에 저장하지 않는다")
     void createWithProbability_doesNotSave_whenGeneratorReturnsNull() {
-        AnomalyCreatedPayload payload = new AnomalyCreatedPayload();
+        SensorViolationPayload payload = new SensorViolationPayload();
         when(defectGenerator.generate(any())).thenReturn(null);
 
         defectService.createWithProbability(payload);
@@ -93,7 +93,7 @@ class DefectServiceIntegrationTest {
             .detectedTime(base.plusSeconds(4200))
             .build();
 
-        AnomalyCreatedPayload payload = new AnomalyCreatedPayload();
+        SensorViolationPayload payload = new SensorViolationPayload();
         when(defectGenerator.generate(payload))
             .thenReturn(defect1)
             .thenReturn(defect2);

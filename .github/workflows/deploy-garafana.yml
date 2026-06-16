@@ -1,0 +1,36 @@
+name: Deploy Grafana
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, feat/ci]
+    paths:
+      - 'k8s/grafana/**'
+
+jobs:
+  deploy-grafana:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Configure kubeconfig
+        run: |
+          aws eks update-kubeconfig \
+            --name sigma-eks-cluster \
+            --region ap-northeast-2
+
+      - name: Deploy Grafana & issue token
+        env:
+          GRAFANA_ADMIN_USER: ${{ secrets.GRAFANA_ADMIN_USER }}
+          GRAFANA_ADMIN_PASSWORD: ${{ secrets.GRAFANA_ADMIN_PASSWORD }}
+        run: bash k8s/grafana/setup-grafana-secret.sh

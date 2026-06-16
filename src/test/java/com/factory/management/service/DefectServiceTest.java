@@ -1,6 +1,6 @@
 package com.factory.management.service;
 
-import com.factory.management.event.payload.consumer.AnomalyCreatedPayload;
+import com.factory.management.event.payload.consumer.SensorViolationPayload;
 import com.factory.management.infrastructure.entity.Defect;
 import com.factory.management.infrastructure.repository.DefectRepository;
 import com.factory.management.simulator.util.DefectGenerator;
@@ -51,7 +51,7 @@ class DefectServiceTest {
     @DisplayName("확률적으로 불량 대상이 감지되면 불량을 생성하고 저장한다")
     void createWithProbabilitySuccessTest() {
         // given
-        AnomalyCreatedPayload payload = new AnomalyCreatedPayload();
+        SensorViolationPayload payload = new SensorViolationPayload();
         Defect defect = Defect.builder().defectCode("DF-01").build();
         when(defectGenerator.generate(payload)).thenReturn(defect);
 
@@ -67,7 +67,7 @@ class DefectServiceTest {
     @DisplayName("확률적으로 불량 대상이 감지되지 않으면 저장하지 않는다")
     void createWithProbabilitySkipTest() {
         // given
-        AnomalyCreatedPayload payload = new AnomalyCreatedPayload();
+        SensorViolationPayload payload = new SensorViolationPayload();
         when(defectGenerator.generate(payload)).thenReturn(null);
 
         // when

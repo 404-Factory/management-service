@@ -8,12 +8,12 @@ import com.factory.management.event.type.AnomalyEventType;
 import com.factory.management.service.GrafanaSnapshotService;
 
 import lombok.RequiredArgsConstructor;
-
-import java.time.Instant;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AnomalyCreatedHandler implements EventHandler<AnomalyCreatedPayload> {
@@ -30,14 +30,18 @@ public class AnomalyCreatedHandler implements EventHandler<AnomalyCreatedPayload
     @Transactional
     @InboxProcessed
     public void process(Event<AnomalyCreatedPayload> event) {
+        AnomalyCreatedPayload payload = event.getPayload();
+        log.info("[AnomalyCreated] equipmentId={}, severity={}, causeRule={}, recipeParameter={}",
+            payload.getEquipmentId(), payload.getSeverity(), payload.getCauseRule(), payload.getRecipeParameter());
 
-        Instant fromInstant = event.getPayload().getFirstDetectedAt();
-        Instant toInstant = event.getPayload().getLastDetectedAt();
-
-        String fromStr = fromInstant.toString();
-        String toStr = toInstant.toString();
-
-        grafanaSnapshotService.createSnapshot(event.getPayload().getAnomalyId(), dashboardUid, fromStr, toStr,
-                event.getPayload().getEquipmentName());
+        // Grafana 스냅샷은 best-effort — Grafana 장애/누락 필드로 실패해도 이벤트 처리는 계속한다.
+        try {
+            String fromStr = payload.getFirstDetectedAt().toString();
+            String toStr = payload.getLastDetectedAt().toString();
+            grafanaSnapshotService.createSnapshot(payload.getAnomalyId(), dashboardUid, fromStr, toStr,
+                    payload.getEquipmentName());
+        } catch (Exception e) {
+            log.error("Failed to create Grafana snapshot. anomalyId={}", payload.getAnomalyId(), e);
+        }
     }
 }

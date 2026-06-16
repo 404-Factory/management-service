@@ -26,6 +26,7 @@ public class DefectServiceImpl implements DefectService {
     }
 
     @Override
+    @Transactional
     public void createWithProbability(SensorViolationPayload payload) {
         Defect defect = defectGenerator.generate(payload);
         if (defect != null) {
