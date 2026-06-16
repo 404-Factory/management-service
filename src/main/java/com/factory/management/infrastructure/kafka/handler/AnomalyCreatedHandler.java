@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,10 +38,8 @@ public class AnomalyCreatedHandler implements EventHandler<AnomalyCreatedPayload
         log.info("[AnomalyCreated] equipmentId={}, severity={}, causeRule={}, recipeParameter={}",
             payload.getEquipmentId(), payload.getSeverity(), payload.getCauseRule(), payload.getRecipeParameter());
 
-        Instant occurredTime = event.getPayload().getOccurredTime();
-
-        Instant fromInstant = occurredTime.minus(30, ChronoUnit.MINUTES);
-        Instant toInstant = occurredTime.plus(30, ChronoUnit.MINUTES);
+        Instant fromInstant = payload.getFirstDetectedAt();
+        Instant toInstant = payload.getLastDetectedAt();
 
         String fromStr = fromInstant.toString();
         String toStr = toInstant.toString();
