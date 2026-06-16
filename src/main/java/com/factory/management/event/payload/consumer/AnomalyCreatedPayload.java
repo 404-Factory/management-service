@@ -1,4 +1,4 @@
-package com.factory.management.event.consume.payload;
+package com.factory.management.event.payload.consumer;
 
 import com.factory.common.event.domain.EventPayload;
 import java.time.Instant;
@@ -20,4 +20,5 @@ public class AnomalyCreatedPayload implements EventPayload {
     private Instant firstDetectedAt;
     private Instant lastDetectedAt;
     private String causeRule;
+    private String detectionReason;
 }

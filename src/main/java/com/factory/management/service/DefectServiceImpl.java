@@ -1,14 +1,20 @@
 package com.factory.management.service;
 
+<<<<<<< HEAD
 import com.factory.management.event.consume.payload.SensorViolationPayload;
+=======
+import com.factory.management.event.payload.consumer.AnomalyCreatedPayload;
+>>>>>>> origin/main
 import com.factory.management.infrastructure.entity.Defect;
 import com.factory.management.infrastructure.repository.DefectRepository;
 import com.factory.management.simulator.util.DefectGenerator;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DefectServiceImpl implements DefectService {
@@ -27,7 +33,12 @@ public class DefectServiceImpl implements DefectService {
     public void createWithProbability(SensorViolationPayload payload) {
         Defect defect = defectGenerator.generate(payload);
         if (defect != null) {
+            log.info("[DefectCreated] defectType={}, defectCode={}, equipmentName={}",
+                defect.getDefectType(), defect.getDefectCode(), defect.getCauseEquipmentName());
             defectRepository.save(defect);
+        } else {
+            log.debug("[DefectSkipped] equipmentId={}, severity={}",
+                payload.getEquipmentId(), payload.getSeverity());
         }
     }
 }

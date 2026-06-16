@@ -21,17 +21,21 @@ spring:
 
     consumer:
       group-id: management-service
-      auto-offset-reset: earliest
+      auto-offset-reset: latest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       properties:
         spring.json.trusted.packages: "*"
+    listener:
+      ack-mode: record
 
 sigma:
   event:
     consumer:
-      topics: "management-event"
+      topics: "Anomaly.event"
       groupId: "management-consumer-group"
+      subscription:
+        - "AnomalyCreated"
 
 logging.level.org.springframework.boot.context.properties: DEBUG
 

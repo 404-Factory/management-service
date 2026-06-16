@@ -1,6 +1,10 @@
 package com.factory.management.simulator.util;
 
+<<<<<<< HEAD
 import com.factory.management.event.consume.payload.SensorViolationPayload;
+=======
+import com.factory.management.event.payload.consumer.AnomalyCreatedPayload;
+>>>>>>> origin/main
 import com.factory.management.infrastructure.entity.Defect;
 import com.factory.management.infrastructure.entity.Equipment;
 import com.factory.management.infrastructure.entity.Lot;
