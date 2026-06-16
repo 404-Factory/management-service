@@ -45,6 +45,13 @@ spec:
               value: "Viewer"
             - name: GF_DEFAULT_APP_MODE
               value: "development"
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 30   # 플러그인 설치 포함 최대 ~160초 대기
           volumeMounts:
             - name: grafana-data
               mountPath: /var/lib/grafana

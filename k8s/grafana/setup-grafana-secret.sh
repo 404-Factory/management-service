@@ -47,17 +47,24 @@ if ! kubectl rollout status "deployment/${GRAFANA_SVC}" -n "${NAMESPACE}" --time
 fi
 
 # 3) port-forward (백그라운드, 스크립트 종료 시 정리)
+#    rollout status 통과 = grafana Ready(readinessProbe /api/health)이므로 여기선 port-forward만 붙으면 됨.
 log "[3/5] port-forward svc/${GRAFANA_SVC} ${LOCAL_PORT}:3000"
-kubectl port-forward "svc/${GRAFANA_SVC}" "${LOCAL_PORT}:3000" -n "${NAMESPACE}" >/dev/null 2>&1 &
+PF_LOG="$(mktemp)"
+kubectl port-forward "svc/${GRAFANA_SVC}" "${LOCAL_PORT}:3000" -n "${NAMESPACE}" >"${PF_LOG}" 2>&1 &
 PF_PID=$!
-trap 'kill "${PF_PID}" 2>/dev/null || true' EXIT
+trap 'kill "${PF_PID}" 2>/dev/null || true; rm -f "${PF_LOG}"' EXIT
 
 log "    Grafana health check"
 for _ in $(seq 1 30); do
   curl -sf "${BASE}/api/health" >/dev/null 2>&1 && break
+  # port-forward가 죽었으면 즉시 원인 출력 후 중단
+  kill -0 "${PF_PID}" 2>/dev/null || { echo "port-forward 종료됨:"; cat "${PF_LOG}"; exit 1; }
   sleep 2
 done
-curl -sf "${BASE}/api/health" >/dev/null 2>&1 || { echo "Grafana 연결 실패"; exit 1; }
+if ! curl -sf "${BASE}/api/health" >/dev/null 2>&1; then
+  echo "Grafana 연결 실패. port-forward 로그:"; cat "${PF_LOG}"
+  exit 1
+fi
 
 # 4) ServiceAccount 확보 → 기존 토큰 정리 → 새 토큰 발급
 log "[4/5] management-snapshot SA 확보 및 토큰 발급"
