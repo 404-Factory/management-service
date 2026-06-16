@@ -36,8 +36,18 @@ public class AnomalyCreatedHandler implements EventHandler<AnomalyCreatedPayload
 
         // Grafana 스냅샷은 best-effort — Grafana 장애/누락 필드로 실패해도 이벤트 처리는 계속한다.
         try {
-            String fromStr = payload.getFirstDetectedAt().toString();
-            String toStr = payload.getLastDetectedAt().toString();
+            java.time.Instant first = payload.getFirstDetectedAt();
+            java.time.Instant last = payload.getLastDetectedAt();
+            if (first != null) {
+                first = first.minus(java.time.Duration.ofMinutes(10));
+            }
+            if (last != null) {
+                last = last.plus(java.time.Duration.ofMinutes(10));
+            } else if (first != null) {
+                last = first.plus(java.time.Duration.ofMinutes(20));
+            }
+            String fromStr = first != null ? first.toString() : "";
+            String toStr = last != null ? last.toString() : "";
             grafanaSnapshotService.createSnapshot(payload.getAnomalyId(), dashboardUid, fromStr, toStr,
                     payload.getEquipmentName());
         } catch (Exception e) {
