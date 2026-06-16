@@ -49,9 +49,3 @@ logging.level.org.springframework.boot.context.properties: DEBUG
 grafana:
   url: ${GRAFANA_URL:http://localhost:3000}
   token: ${GRAFANA_TOKEN:}
-
-app:
-  kafka:
-    consumer:
-      violation-topic: ${KAFKA_VIOLATIONS_TOPIC:sensor-violations}
-      violation-group-id: ${KAFKA_VIOLATIONS_GROUP_ID:anomaly-violation-group}
