@@ -17,5 +17,7 @@ public class AnomalyCreatedPayload implements EventPayload {
     private String recipeParameter;
     private String severity;
     private Instant occurredTime;
+    private Instant firstDetectedAt;
+    private Instant lastDetectedAt;
     private String causeRule;
 }

@@ -4,7 +4,10 @@ import com.factory.common.event.domain.Event;
 import com.factory.common.inbox.jpa.aop.InboxProcessed;
 import com.factory.common.kafka.support.EventHandler;
 import com.factory.management.event.consume.payload.AnomalyCreatedPayload;
+import com.factory.management.event.consume.payload.SensorViolationPayload;
 import com.factory.management.event.type.AnomalyEventType;
+import com.factory.management.event.type.SensorViolationEventType;
+import com.factory.management.service.DefectService;
 import com.factory.management.service.GrafanaSnapshotService;
 
 import lombok.RequiredArgsConstructor;
@@ -16,28 +19,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-public class AnomalyCreatedHandler implements EventHandler<AnomalyCreatedPayload> {
+public class SensorViolationHandler implements EventHandler<SensorViolationPayload> {
 
-    private final GrafanaSnapshotService grafanaSnapshotService;
-    private final String dashboardUid = "adpp6l5";
+    private final DefectService defectService;
 
     @Override
     public String getEventType() {
-        return AnomalyEventType.ANOMALY_CREATED.getName();
+        return SensorViolationEventType.SENSOR_VIOLATION.getName();
     }
 
     @Override
     @Transactional
     @InboxProcessed
-    public void process(Event<AnomalyCreatedPayload> event) {
-
-        Instant fromInstant = event.getPayload().getFirstDetectedAt();
-        Instant toInstant = event.getPayload().getLastDetectedAt();
-
-        String fromStr = fromInstant.toString();
-        String toStr = toInstant.toString();
-
-        grafanaSnapshotService.createSnapshot(event.getPayload().getAnomalyId(), dashboardUid, fromStr, toStr,
-                event.getPayload().getEquipmentName());
+    public void process(Event<SensorViolationPayload> event) {
+        defectService.createWithProbability(event.getPayload());
     }
 }
