@@ -26,7 +26,14 @@ spec:
   rules:
     - http:
         paths:
-          - path: /api/equipments
+          - path: /api/management
+            pathType: Prefix
+            backend:
+              service:
+                name: management-service
+                port:
+                  number: 8086
+          - path: /api/snapshots
             pathType: Prefix
             backend:
               service:
