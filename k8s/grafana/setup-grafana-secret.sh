@@ -33,9 +33,10 @@ kubectl create secret generic grafana-admin -n "${NAMESPACE}" \
   --from-literal=admin_password="${ADMIN_PASSWORD}" \
   --dry-run=client -o yaml | kubectl apply -f -
 
-# 2) Grafana 배포 + 기동 대기
-log "[2/5] grafana.yml 적용 및 기동 대기"
+# 2) Grafana 배포(+ingress) + 기동 대기
+log "[2/5] grafana.yml / grafanaIngress.yml 적용 및 기동 대기"
 kubectl apply -f "${SCRIPT_DIR}/grafana.yml"
+kubectl apply -f "${SCRIPT_DIR}/grafanaIngress.yml"
 if ! kubectl rollout status "deployment/${GRAFANA_SVC}" -n "${NAMESPACE}" --timeout=180s; then
   echo "---- ERROR: grafana rollout 실패. 진단 정보 ----"
   echo "[pods]";  kubectl get pods -n "${NAMESPACE}" -l app=grafana -o wide || true
