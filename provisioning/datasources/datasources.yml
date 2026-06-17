@@ -10,7 +10,7 @@ datasources:
       catalog: AwsDataCatalog
       database: raw_sensor_data
       defaultRegion: ap-northeast-2
-      outputLocation: s3://sigma-310095858382-ap-northeast-2-an/
+      outputLocation: ${S3_BUCKET_NAME}/
       workgroup: primary
     secureJsonData:
       accessKey: ${AWS_ACCESS_KEY_ID} 

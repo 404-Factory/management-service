@@ -46,5 +46,6 @@ app:
 logging.level.org.springframework.boot.context.properties: DEBUG
 
 grafana:
-  url: ${GRAFANA_URL:http://localhost:3000}
+  url: ${GRAFANA_URL:http://localhost:3000}          # 내부 API 호출용 (management → grafana)
   token: ${GRAFANA_TOKEN:}
+  public-url: ${GRAFANA_PUBLIC_URL:https://sigma.mhpark0605.shop/grafana}  # 브라우저 접근용 공개 base (d-solo 기본 URL)
