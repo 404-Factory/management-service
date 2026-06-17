@@ -51,6 +51,9 @@ class AnomalyCreatedHandlerTest {
 
         handler.process(event);
 
-        verify(grafanaSnapshotService).createSnapshot(10L, "adpp6l5", from.toString(), to.toString(), "EQ-01");
+        // 핸들러는 firstDetectedAt-10분 ~ lastDetectedAt+10분 버퍼 구간으로 스냅샷을 생성한다.
+        verify(grafanaSnapshotService).createSnapshot(10L, "adpp6l5",
+                from.minus(java.time.Duration.ofMinutes(10)).toString(),
+                to.plus(java.time.Duration.ofMinutes(10)).toString(), "EQ-01");
     }
 }
