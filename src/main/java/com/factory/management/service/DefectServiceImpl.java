@@ -4,7 +4,7 @@ import com.factory.management.event.payload.consumer.SensorViolationPayload;
 import com.factory.management.infrastructure.entity.Defect;
 import com.factory.management.infrastructure.repository.DefectRepository;
 import com.factory.management.simulator.util.DefectGenerator;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,9 +20,9 @@ public class DefectServiceImpl implements DefectService {
 
     @Override
     @Transactional(readOnly = true)
-    public long getCount(String equipmentName, LocalDate startDate, LocalDate endDate) {
+    public long getCount(String equipmentName, LocalDateTime since) {
 
-        return defectRepository.getDefectCount(equipmentName, startDate, endDate);
+        return defectRepository.getDefectCount(equipmentName, since);
     }
 
     @Override

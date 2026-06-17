@@ -2,7 +2,7 @@ package com.factory.management.controller;
 
 import com.factory.management.dto.request.CountSearchCondition;
 import com.factory.management.service.DefectService;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +23,10 @@ public class DefectController {
     public ResponseEntity<Long> getCount(
         @ModelAttribute CountSearchCondition condition) {
         String equipmentName = condition.getEquipmentName();
-        LocalDate startDate = condition.getStartDate();
-        LocalDate endDate = condition.getEndDate();
+        LocalDateTime since = condition.getSince();
 
-        log.info("getEquipments");
-        log.info("equipmentName: {}, startDate: {}, endDate: {}", equipmentName, startDate,
-            endDate);
+        log.info("getDefectCount equipmentName: {}, since: {}", equipmentName, since);
 
-        return ResponseEntity.ok(defectService.getCount(equipmentName, startDate, endDate));
+        return ResponseEntity.ok(defectService.getCount(equipmentName, since));
     }
 }
