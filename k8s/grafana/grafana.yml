@@ -45,9 +45,36 @@ spec:
               value: "Viewer"
             - name: GF_DEFAULT_APP_MODE
               value: "development"
+            # /grafana sub-path 서빙 (ALB ingress의 /grafana 경로와 정합).
+            # host는 박지 않음 → ALB DNS가 바뀌어도 무관. 스냅샷 URL은 프론트가 현재 host 기준으로 조립.
+            - name: GF_SERVER_ROOT_URL
+              value: "%(protocol)s://%(domain)s/grafana/"
+            - name: GF_SERVER_SERVE_FROM_SUB_PATH
+              value: "true"
+            # 영속성: emptyDir 대신 기존 RDS(MariaDB)를 Grafana 외부 DB 백엔드로 사용.
+            # user/password/host는 기존 rdb-secret 재사용, DB(schema)만 별도(grafana).
+            - name: GF_DATABASE_TYPE
+              value: "mysql"
+            - name: GF_DATABASE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: rdb-secret
+                  key: DB_HOST
+            - name: GF_DATABASE_NAME
+              value: "grafana"
+            - name: GF_DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: rdb-secret
+                  key: DB_USERNAME
+            - name: GF_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rdb-secret
+                  key: DB_PASSWORD
           readinessProbe:
             httpGet:
-              path: /api/health
+              path: /grafana/api/health
               port: 3000
             initialDelaySeconds: 10
             periodSeconds: 5
@@ -63,8 +90,8 @@ spec:
               memory: "256Mi"
               cpu: "250m"
       volumes:
-        # 임시: EBS CSI 드라이버 미설치로 emptyDir 사용. 드라이버 설치 후 아래 PVC 블록으로 복귀할 것.
-        # 주의: emptyDir는 pod 재시작 시 grafana DB(SA 토큰 포함)가 날아감 → 토큰 재발급 필요.
+        # grafana 상태(대시보드/데이터소스/스냅샷/SA토큰)는 외부 RDS(GF_DATABASE_*)에 저장되므로 영속성 OK.
+        # /var/lib/grafana(emptyDir)엔 플러그인/렌더 캐시만 남고, 재시작 시 플러그인은 자동 재설치됨 → PVC 불필요.
         - name: grafana-data
           emptyDir: {}
         # - name: grafana-data
