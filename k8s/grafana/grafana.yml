@@ -72,6 +72,9 @@ spec:
                 secretKeyRef:
                   name: rdb-secret
                   key: DB_PASSWORD
+            # RDS가 require_secure_transport=ON → TLS 필수. CA 검증 없이 암호화만(앱의 sslMode=trust 동등).
+            - name: GF_DATABASE_SSL_MODE
+              value: "skip-verify"
           readinessProbe:
             httpGet:
               path: /grafana/api/health
