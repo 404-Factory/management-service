@@ -4,7 +4,7 @@ import com.factory.management.event.payload.consumer.SensorViolationPayload;
 import com.factory.management.infrastructure.entity.Defect;
 import com.factory.management.infrastructure.repository.DefectRepository;
 import com.factory.management.simulator.util.DefectGenerator;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,16 +35,15 @@ class DefectServiceTest {
     void getCountTest() {
         // given
         String equipmentName = "EQ-01";
-        LocalDate startDate = LocalDate.of(2026, 6, 8);
-        LocalDate endDate = LocalDate.of(2026, 6, 8);
-        when(defectRepository.getDefectCount(equipmentName, startDate, endDate)).thenReturn(5L);
+        LocalDateTime since = LocalDateTime.of(2026, 6, 8, 0, 0);
+        when(defectRepository.getDefectCount(equipmentName, since)).thenReturn(5L);
 
         // when
-        long count = defectService.getCount(equipmentName, startDate, endDate);
+        long count = defectService.getCount(equipmentName, since);
 
         // then
         assertThat(count).isEqualTo(5L);
-        verify(defectRepository).getDefectCount(equipmentName, startDate, endDate);
+        verify(defectRepository).getDefectCount(equipmentName, since);
     }
 
     @Test

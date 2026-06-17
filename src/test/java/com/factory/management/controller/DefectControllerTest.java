@@ -2,7 +2,7 @@ package com.factory.management.controller;
 
 import com.factory.common.contract.autoconfigure.ContractAutoConfiguration;
 import com.factory.management.service.DefectService;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +38,13 @@ class DefectControllerTest {
     void getCountApiTest() throws Exception {
         // given
         String equipmentName = "EQ-01";
-        LocalDate startDate = LocalDate.of(2026, 6, 8);
-        LocalDate endDate = LocalDate.of(2026, 6, 8);
-        when(defectService.getCount(eq(equipmentName), eq(startDate), eq(endDate))).thenReturn(42L);
+        LocalDateTime since = LocalDateTime.of(2026, 6, 8, 0, 0);
+        when(defectService.getCount(eq(equipmentName), eq(since))).thenReturn(42L);
 
         // when & then
         mockMvc.perform(get("/api/management/defects/count")
                 .param("equipmentName", equipmentName)
-                .param("startDate", "2026-06-08")
-                .param("endDate", "2026-06-08")
+                .param("since", "2026-06-08T00:00")
                 .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isOk())

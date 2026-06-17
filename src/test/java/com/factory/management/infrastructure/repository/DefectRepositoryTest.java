@@ -3,6 +3,7 @@ package com.factory.management.infrastructure.repository;
 import com.factory.management.infrastructure.entity.Defect;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,14 +55,14 @@ class DefectRepositoryTest {
         defectRepository.save(defect2);
         defectRepository.save(defect3);
 
-        // when & then
-        long count1 = defectRepository.getDefectCount("EQ-01", LocalDate.of(2026, 6, 8), LocalDate.of(2026, 6, 8));
+        // when & then (since 이후의 defect 카운트)
+        long count1 = defectRepository.getDefectCount("EQ-01", LocalDateTime.of(2026, 6, 8, 0, 0));
         assertThat(count1).isEqualTo(2);
 
-        long count2 = defectRepository.getDefectCount("EQ-02", LocalDate.of(2026, 6, 8), LocalDate.of(2026, 6, 8));
+        long count2 = defectRepository.getDefectCount("EQ-02", LocalDateTime.of(2026, 6, 8, 0, 0));
         assertThat(count2).isEqualTo(1);
 
-        long count3 = defectRepository.getDefectCount("EQ-01", LocalDate.of(2026, 6, 9), LocalDate.of(2026, 6, 9));
+        long count3 = defectRepository.getDefectCount("EQ-01", LocalDateTime.of(2026, 6, 9, 0, 0));
         assertThat(count3).isEqualTo(0);
     }
 }
